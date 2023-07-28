@@ -9,10 +9,11 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  firebase_core: ^2.15.0
 
 dev_dependencies:
   flutter_test:
-    sdk: flutterabout deactivating specific lint
+    sdk: flutter
   flutter_lints: ^2.0.0
 
 flutter:

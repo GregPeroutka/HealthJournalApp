@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "745747806049",
+    "project_id": "myhealthjournal-576f3",
+    "storage_bucket": "myhealthjournal-576f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:745747806049:android:989602aee9609dd5443720",
+        "android_client_info": {
+          "package_name": "com.gregperoutka.my_health_journal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "745747806049-vlmr87mfde9h7c3rsijtgdrns5rsho6m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkPniTeAbCgATr49m7m5JXA9vsctuz_N8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "745747806049-vlmr87mfde9h7c3rsijtgdrns5rsho6m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "745747806049-4lssfnjnl2en2v5q15g0l1ugt11dv5h2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myHealthJournal.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

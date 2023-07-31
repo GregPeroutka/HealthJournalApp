@@ -4,7 +4,6 @@ import '../firebase_options.dart';
 
 
 class PageControllerViewModel {
-  PageControllerViewModel();
 
   Future<bool> initApp() async {
     await Firebase.initializeApp(

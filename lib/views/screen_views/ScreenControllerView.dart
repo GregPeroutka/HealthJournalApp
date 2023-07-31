@@ -1,43 +1,48 @@
 // This class is the first screen that gets loaded from app startup
 // The main purpose of this screen is to handle transitions between screens
-// There are not supposed to be many transitions past app initialization, with MainScreenView being the main UI screen
 
 import 'package:flutter/cupertino.dart';
+import 'package:my_health_journal/views/screen_views/SigninScreenView.dart';
 import '../../view_models/ScreenControllerViewModel.dart';
 import 'ErrorScreenView.dart';
 import 'LoadingScreenView.dart';
 import 'MainScreenView.dart';
 
 class ScreenControllerView extends StatefulWidget {
-  const ScreenControllerView({super.key});
+  static final ScreenControllerView _instance = ScreenControllerView._internal();
+  factory ScreenControllerView() {
+    return _instance;
+  }
+  ScreenControllerView._internal();
 
   @override
   State<ScreenControllerView> createState() => _ScreenControllerViewState();
 }
 
 class _ScreenControllerViewState extends State<ScreenControllerView> {
-  final PageControllerViewModel vm = PageControllerViewModel();
-  String currentScreenView = 'loadingScreen';
+  final PageControllerViewModel _vm = PageControllerViewModel();
+  String _currentScreenView = 'loadingScreen';
 
   final Map<String, Widget?> screenViews = {
     'loadingScreen': const LoadingScreenView(),
     'errorScreen': const ErrorScreenView(),
-    'mainScreen': const MainScreenView()
+    'mainScreen': const MainScreenView(),
+    'loginScreen': const SigninScreenView()
   };
 
   _ScreenControllerViewState() {
-    vm.initApp().then((bool success) => {
+    _vm.initApp().then((bool success) => {
       setState(() => {
         if (success)
-          currentScreenView = 'mainScreen'
+          _currentScreenView = 'loginScreen'
         else
-          currentScreenView = 'errorScreen'
+          _currentScreenView = 'errorScreen'
       })
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return screenViews[currentScreenView] ?? const ErrorScreenView();
+    return screenViews[_currentScreenView] ?? const ErrorScreenView();
   }
 }

@@ -10,6 +10,6 @@ class PageControllerViewModel {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     
-    return Future<bool>.delayed(const Duration(seconds: 3), () => true);
+    return true;
   }
 }

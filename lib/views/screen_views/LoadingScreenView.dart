@@ -7,6 +7,8 @@ class LoadingScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text("Loading");
+    return const Scaffold(
+      body: Text("Loading")
+    );
   }
 }

@@ -1,7 +1,7 @@
 // This class is the first screen that gets loaded from app startup
 // The main purpose of this screen is to handle transitions between screens
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:my_health_journal/views/screen_views/SigninScreenView.dart';
 import '../../view_models/ScreenControllerViewModel.dart';
 import 'ErrorScreenView.dart';
@@ -34,7 +34,7 @@ class _ScreenControllerViewState extends State<ScreenControllerView> {
     _vm.initApp().then((bool success) => {
       setState(() => {
         if (success)
-          _currentScreenView = 'loginScreen'
+          _currentScreenView = 'mainScreen'
         else
           _currentScreenView = 'errorScreen'
       })

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_health_journal/views/screen_views/ScreenControllerView.dart';
+import 'package:my_health_journal/views/screen_views/screen_controller_view.dart';
 
 void main() {
   runApp(const MyApp());

@@ -37,7 +37,7 @@ class _ScreenControllerViewState extends State<ScreenControllerView> {
     final screenStreamSubscription = _vm.screenStreamController.stream.asBroadcastStream().listen((String event) => 
       setState(() {
         _currentScreenView = event.toString();
-        print('Screen Stream event received: ${event.toString()}');
+        debugPrint('Screen Stream event received: ${event.toString()}');
       })
     );
     screenStreamSubscription.pause();

@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import '../firebase_options.dart';
 
 
@@ -23,10 +24,10 @@ class ScreenControllerViewModel {
 
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if(user == null) {
-        print('User is NOT logged in');
+        debugPrint('User is NOT logged in');
         screenStreamController.sink.add('loginScreen');
       } else {
-        print('User IS logged in');
+        debugPrint('User IS logged in');
         screenStreamController.sink.add('mainScreen');
       }
     });

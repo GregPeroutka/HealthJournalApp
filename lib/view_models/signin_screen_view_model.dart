@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 
 class SigninScreenViewModel {
@@ -25,10 +26,10 @@ class SigninScreenViewModel {
       );
       return true;
     } on FirebaseAuthException catch (e) {
-      print("FirebaseAuthException: ${e.code}");
+      debugPrint("FirebaseAuthException: ${e.code}");
       return false;
     } catch (e) {
-      print("Non-FirebaseAuthException: ${e.toString()}");
+      debugPrint("Non-FirebaseAuthException: ${e.toString()}");
       return false;
     }
   }

@@ -3,6 +3,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:my_health_journal/color_palette.dart';
 
 enum _NavigationBarPosition {
   first,
@@ -32,7 +33,7 @@ class _MainScreenViewState extends State<MainScreenView> {
     _context = context;
     
     return Material(
-      color: Theme.of(_context!).colorScheme.primaryContainer,
+      color: ColorPalette.currentColorPalette.primaryBackground,
 
       child: Column(
         verticalDirection: VerticalDirection.up,
@@ -54,7 +55,7 @@ class _NavigationBar extends Material {
   final double _borderRadius = 1000;
 
   @override
-  Color? get color => Theme.of(_context!).colorScheme.primaryContainer;
+  Color? get color => ColorPalette.currentColorPalette.primaryBackground;
 
   @override
   Widget? get child => FittedBox(
@@ -67,7 +68,7 @@ class _NavigationBar extends Material {
 
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
-        color: Theme.of(_context!).colorScheme.primaryContainer,
+        color: ColorPalette.currentColorPalette.primaryBackground,
         boxShadow: [
           BoxShadow(
             color: const Color.fromARGB(100, 0, 0, 0),
@@ -118,7 +119,7 @@ class _NavigationBarButton extends Material {
     ),
 
     decoration: BoxDecoration(
-      color: Theme.of(_context!).colorScheme.primary,
+      color: ColorPalette.currentColorPalette.primaryBackground,
       shape: BoxShape.circle
     ),
 
@@ -148,7 +149,7 @@ class _Content extends Material {
   @override
   Widget? get child => Container(
     decoration: BoxDecoration(
-      color: Theme.of(_context!).colorScheme.primaryContainer,
+      color: ColorPalette.currentColorPalette.primaryBackground,
       border: Border.all(color: Colors.black)
     ),
   );

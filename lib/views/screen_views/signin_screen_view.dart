@@ -21,7 +21,7 @@ class _SigninScreenViewState extends State<SigninScreenView> {
   Widget build(BuildContext context) {
 
     return Material(
-      color: ColorPalette.lightColorPalette.primaryBackground,
+      color: ColorPalette.currentColorPalette.primaryBackground,
 
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -40,18 +40,17 @@ class _SigninScreenViewState extends State<SigninScreenView> {
 class _EmailTextField extends Material {
 
   @override
+  Color? get color => ColorPalette.currentColorPalette.primaryBackground;
+
+  @override
   Widget? get child => Container(
     margin: const EdgeInsets.fromLTRB(50, 0, 50, 15),
 
     decoration: BoxDecoration(
       borderRadius: const BorderRadius.all(Radius.circular(1000)),
-      color: ColorPalette.lightColorPalette.primaryBackground,
-      boxShadow: const [
-        BoxShadow(
-          color: Color.fromARGB(100, 0, 0, 0),
-          blurRadius: 2,
-          spreadRadius: 1,
-        )
+      color: ColorPalette.currentColorPalette.secondaryBackground,
+      boxShadow: [
+        ColorPalette.currentColorPalette.primaryShadow
       ]
     ),
 
@@ -59,16 +58,28 @@ class _EmailTextField extends Material {
       margin: const EdgeInsets.fromLTRB(20, 0, 15, 0),
       child: Row(
         children: [
+          
           Expanded(
             child: TextField(
               controller: _emailTextEditingController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'Email',
-                border: InputBorder.none
+                border: InputBorder.none,
+                hintStyle: TextStyle(
+                  color: ColorPalette.currentColorPalette.hintText
+                ),
+              ),
+              style: TextStyle(
+                color: ColorPalette.currentColorPalette.text
               ),
             )
           ),
-          const Icon(Icons.email)
+
+          Icon(
+            Icons.email, 
+            color: ColorPalette.currentColorPalette.text
+          )
+
         ],
       ),
     )
@@ -79,18 +90,17 @@ class _EmailTextField extends Material {
 class _PasswordTextField extends Material {
 
   @override
+  Color? get color => ColorPalette.currentColorPalette.primaryBackground;
+
+  @override
   Widget? get child => Container(
     margin: const EdgeInsets.fromLTRB(50, 0, 50, 15),
 
     decoration: BoxDecoration(
       borderRadius: const BorderRadius.all(Radius.circular(1000)),
-      color: ColorPalette.lightColorPalette.primaryBackground,
-      boxShadow: const [
-        BoxShadow(
-          color: Color.fromARGB(100, 0, 0, 0),
-          blurRadius: 2,
-          spreadRadius: 1,
-        )
+      color: ColorPalette.currentColorPalette.secondaryBackground,
+      boxShadow: [
+        ColorPalette.currentColorPalette.primaryShadow
       ]
     ),
 
@@ -101,14 +111,23 @@ class _PasswordTextField extends Material {
           Expanded(
             child: TextField(
               controller: _passwordTextEditingController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'Password',
-                border: InputBorder.none
+                border: InputBorder.none,
+                hintStyle: TextStyle(
+                  color: ColorPalette.currentColorPalette.hintText
+                )
+              ),
+              style: TextStyle(
+                color: ColorPalette.currentColorPalette.text
               ),
               obscureText: true,
             )
           ),
-          const Icon(Icons.lock)
+          Icon(
+            Icons.lock, 
+            color: ColorPalette.currentColorPalette.text
+          )
         ],
       ),
     )
@@ -117,6 +136,9 @@ class _PasswordTextField extends Material {
 }
 
 class _ButtonRow extends Material {
+
+  @override
+  Color? get color => ColorPalette.currentColorPalette.primaryBackground;
 
   @override
   Widget? get child => Container(
@@ -134,6 +156,9 @@ class _ButtonRow extends Material {
 class _LoginButton extends Material {
 
   @override
+  Color? get color => ColorPalette.currentColorPalette.primaryBackground;
+
+  @override
   Widget? get child => Container(
 
     margin: const EdgeInsets.only(right: 10),
@@ -145,13 +170,9 @@ class _LoginButton extends Material {
 
     decoration: BoxDecoration(
       borderRadius: const BorderRadius.all(Radius.circular(1000)),
-      color: ColorPalette.currentColorPalette.contrastButton,
-      boxShadow: const [
-        BoxShadow(
-          color: Color.fromARGB(100, 0, 0, 0),
-          blurRadius: 2,
-          spreadRadius: 1,
-        )
+      color: ColorPalette.currentColorPalette.primary,
+      boxShadow: [
+        ColorPalette.currentColorPalette.primaryShadow
       ]
     ),
 
@@ -181,6 +202,9 @@ class _LoginButton extends Material {
 class _CreateAccountButton extends Material {
 
   @override
+  Color? get color => ColorPalette.currentColorPalette.primaryBackground;
+
+  @override
   Widget? get child => Container(
 
     constraints: const BoxConstraints(
@@ -190,22 +214,18 @@ class _CreateAccountButton extends Material {
 
     decoration: BoxDecoration(
       borderRadius: const BorderRadius.all(Radius.circular(1000)),
-      color: ColorPalette.currentColorPalette.primaryBackground,
-      boxShadow: const [
-        BoxShadow(
-          color: Color.fromARGB(100, 0, 0, 0),
-          blurRadius: 2,
-          spreadRadius: 1,
-        )
+      color: ColorPalette.currentColorPalette.secondaryBackground,
+      boxShadow: [
+        ColorPalette.currentColorPalette.primaryShadow
       ]
     ),
 
     child: TextButton(
       onPressed: () {},
-      child: const Text(
+      child: Text(
         'Create Account',
         style: TextStyle(
-          color: Colors.black
+          color: ColorPalette.currentColorPalette.text
         ),
       )
     )

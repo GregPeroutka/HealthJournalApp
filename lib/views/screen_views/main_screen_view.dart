@@ -18,8 +18,6 @@ enum _NavigationButtonType {
   settings
 }
 
-BuildContext? _context;
-
 class MainScreenView extends StatefulWidget {
   const MainScreenView({super.key});
 
@@ -30,7 +28,6 @@ class MainScreenView extends StatefulWidget {
 class _MainScreenViewState extends State<MainScreenView> {
   @override
   Widget build(BuildContext context) {
-    _context = context;
     
     return Material(
       color: ColorPalette.currentColorPalette.primaryBackground,
@@ -68,7 +65,7 @@ class _NavigationBar extends Material {
 
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
-        color: ColorPalette.currentColorPalette.primaryBackground,
+        color: ColorPalette.currentColorPalette.secondaryBackground,
         boxShadow: [
           BoxShadow(
             color: const Color.fromARGB(100, 0, 0, 0),
@@ -133,13 +130,25 @@ class _NavigationBarButton extends Material {
   Icon _getIcon() {
     switch(_type) {
       case _NavigationButtonType.weight:
-        return Icon(Icons.scale);
+        return Icon(
+            Icons.scale, 
+            color: ColorPalette.currentColorPalette.text
+          );
       case _NavigationButtonType.food:
-        return Icon(Icons.food_bank);
+        return Icon(
+            Icons.food_bank, 
+            color: ColorPalette.currentColorPalette.text
+          );
       case _NavigationButtonType.workout:
-        return Icon(Icons.running_with_errors);
+        return Icon(
+            Icons.running_with_errors, 
+            color: ColorPalette.currentColorPalette.text
+          );
       case _NavigationButtonType.settings:
-        return Icon(Icons.settings);
+        return Icon(
+            Icons.settings, 
+            color: ColorPalette.currentColorPalette.text
+          );
     }
   }
 }

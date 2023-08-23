@@ -12,6 +12,7 @@ dependencies:
   firebase_core: ^2.15.0
   firebase_auth: ^4.7.2
   cloud_firestore: ^4.8.4
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
@@ -20,3 +21,16 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  fonts:
+    - family: Rubik
+      fonts:
+        - asset: Assets/fonts/Rubik-Medium.ttf
+          style: normal
+        - asset: Assets/fonts/Rubik-Bold.ttf
+          weight: 700
+        - asset: Assets/fonts/Rubik-BoldItalic.ttf
+          style: italic
+          weight: 700
+        - asset: Assets/fonts/Rubik-Italic.ttf
+          style: italic

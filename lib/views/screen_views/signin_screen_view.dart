@@ -179,9 +179,9 @@ class _LoginButton extends Material {
     child: TextButton(
       onPressed: () {
         _vm.signIn(
-            _emailTextEditingController.text.toString(), 
-            _passwordTextEditingController.text.toString()
-          ).then((value) => {
+          _emailTextEditingController.text.toString(), 
+          _passwordTextEditingController.text.toString()
+        ).then((value) => {
           if(value) {
             
           }

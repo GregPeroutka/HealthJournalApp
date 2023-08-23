@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:my_health_journal/color_palette.dart';
-import 'package:my_health_journal/views/navigation/navigation_types.dart';
+import 'package:my_health_journal/types/navigation_types.dart';
 
 class NavigationBarButton extends StatefulWidget {
 
   const NavigationBarButton({
     super.key, 
-    
+
     this.isSelected = false,
     this.index,
     this.pos,
@@ -17,7 +17,7 @@ class NavigationBarButton extends StatefulWidget {
   final bool? isSelected;
   final int? index;
   final NavigationBarPosition? pos;
-  final NavigationBarType? buttonType;
+  final NavigationBarButtonType? buttonType;
   final NavigationBarButtonCallBack? buttonCallBack;
 
   @override
@@ -52,7 +52,6 @@ class _NavigationBarButtonState extends State<NavigationBarButton>{
 
         child: IconButton(
           onPressed: () {
-            debugPrint('Weight Button Pressed :D');
             widget.buttonCallBack!(widget.index!, widget.buttonType!);
           },
           icon: Icon(
@@ -67,13 +66,13 @@ class _NavigationBarButtonState extends State<NavigationBarButton>{
 
   IconData _getIcon() {
     switch(widget.buttonType) {
-      case NavigationBarType.weight:
+      case NavigationBarButtonType.weight:
         return Icons.scale;
-      case NavigationBarType.food:
+      case NavigationBarButtonType.food:
         return Icons.food_bank;
-      case NavigationBarType.workout:
+      case NavigationBarButtonType.workout:
         return Icons.add_card;
-      case NavigationBarType.settings:
+      case NavigationBarButtonType.settings:
         return Icons.settings;
       default:
         return Icons.error;

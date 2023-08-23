@@ -24,141 +24,132 @@ class _WeightPageState extends State<WeightPage> {
 
   @override
   Widget build(BuildContext context) {
-    
-    return FutureBuilder(
-      future: WeightPageViewModel.getLastNDaysWeightData(historyCount),
-      initialData: List<WeightData?>.filled(historyCount, null),
+    historyWeightData = WeightPageViewModel.getLastNDaysWeightData(historyCount);
 
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        historyWeightData = snapshot.data ?? List<WeightData?>.filled(historyCount, null);
-
-        return SafeArea(
-          bottom: false,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(
-              _containerPadding,
-              _containerPadding,
-              _containerPadding,
-              0
-            ),
-            child: Container(
-            
-              decoration: BoxDecoration(
-                color: ColorPalette.currentColorPalette.secondaryBackground,
-                borderRadius: BorderRadius.circular(_borderRadius),
-              ),
-              
-              child: Column(
+    return SafeArea(
+      bottom: false,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(
+          _containerPadding,
+          _containerPadding,
+          _containerPadding,
+          0
+        ),
+        child: Container(
         
-                children: [
-        
-                  const Padding(padding: EdgeInsets.only(top: 8)),
-        
-                  Center(
-                    child: Text(
-                      'Today',
-                      style: TextStyle(
-                        color: ColorPalette.currentColorPalette.hintText,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Rubik",
-                      ),
-                    ),
-                  ),
-        
-                  Center(
-                    child: Text(
-                      '181.4 lbs',
-                      style: TextStyle(
-                        color: ColorPalette.currentColorPalette.text,
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Rubik",
-                      ),
-                    ),
-                  ),
-        
-                  Container(
-                    height: 200,
-                    margin: const EdgeInsets.all(8.0),
-                        
-                    decoration: BoxDecoration(
-                      color: ColorPalette.currentColorPalette.primaryBackground,
-                      borderRadius: BorderRadius.circular(_borderRadius),
-                    )
-        
-                  ),
-        
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: ColorPalette.currentColorPalette.primaryBackground,
-                            shape: BoxShape.circle
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-        
-                              DatabaseModel.writeWeightData(
-                                WeightData(
-                                  note: '',
-                                  weight: 182.0,
-                                  timestamp: Timestamp.fromDate(DateTime.now().subtract(Duration(days: 5)))
-                                )
-                              );
-                              
-                            },
-                            icon: Icon(
-                              Icons.add_rounded,
-                              color: ColorPalette.currentColorPalette.text,
-                              size: 45,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-        
-                  const Padding(padding: EdgeInsets.only(top: 8)),
-        
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 24.0, bottom: 8),
-                      child: Text(
-                        'Last $historyCount Days',
-                        style: TextStyle(
-                          color: ColorPalette.currentColorPalette.hintText,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Rubik",
-                        ),
-                      ),
-                    ),
-                  ),
-        
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: historyCount,
-        
-                      itemBuilder: (BuildContext context, int index) {
-                        return historyContainer(index, historyWeightData[index]);
-                      },
-                    ),
-                  ),
-      
-                ],
-              )
-            ),
+          decoration: BoxDecoration(
+            color: ColorPalette.currentColorPalette.secondaryBackground,
+            borderRadius: BorderRadius.circular(_borderRadius),
           ),
-        );
-      }
-      
+          
+          child: Column(
+    
+            children: [
+    
+              const Padding(padding: EdgeInsets.only(top: 8)),
+    
+              Center(
+                child: Text(
+                  'Today',
+                  style: TextStyle(
+                    color: ColorPalette.currentColorPalette.hintText,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Rubik",
+                  ),
+                ),
+              ),
+    
+              Center(
+                child: Text(
+                  '181.4 lbs',
+                  style: TextStyle(
+                    color: ColorPalette.currentColorPalette.text,
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Rubik",
+                  ),
+                ),
+              ),
+    
+              Container(
+                height: 200,
+                margin: const EdgeInsets.all(8.0),
+                    
+                decoration: BoxDecoration(
+                  color: ColorPalette.currentColorPalette.primaryBackground,
+                  borderRadius: BorderRadius.circular(_borderRadius),
+                )
+    
+              ),
+    
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: SizedBox(
+                    height: 60,
+                    width: 60,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: ColorPalette.currentColorPalette.primaryBackground,
+                        shape: BoxShape.circle
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+    
+                          DatabaseModel.writeWeightData(
+                            WeightData(
+                              note: '',
+                              weight: 182.0,
+                              timestamp: Timestamp.fromDate(DateTime.now().subtract(Duration(days: 5)))
+                            )
+                          );
+                          
+                        },
+                        icon: Icon(
+                          Icons.add_rounded,
+                          color: ColorPalette.currentColorPalette.text,
+                          size: 45,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+    
+              const Padding(padding: EdgeInsets.only(top: 8)),
+    
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 24.0, bottom: 8),
+                  child: Text(
+                    'Last $historyCount Days',
+                    style: TextStyle(
+                      color: ColorPalette.currentColorPalette.hintText,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Rubik",
+                    ),
+                  ),
+                ),
+              ),
+    
+              Expanded(
+                child: ListView.builder(
+                  itemCount: historyCount,
+    
+                  itemBuilder: (BuildContext context, int index) {
+                    return historyContainer(index, historyWeightData[index]);
+                  },
+                ),
+              ),
+  
+            ],
+          )
+        ),
+      ),
     );
   }
 

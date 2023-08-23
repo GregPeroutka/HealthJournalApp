@@ -20,6 +20,7 @@ class _MainScreenViewState extends State<MainScreenView> {
   Widget _currentPage = LoadingPage();
 
   _MainScreenViewState() {
+    MainScreenViewModel.loadWeight();
     MainScreenViewModel.pageStreamController.stream.asBroadcastStream().listen((PageType pageType) {
       setState(() {
         switch (pageType) {
@@ -57,7 +58,7 @@ class _MainScreenViewState extends State<MainScreenView> {
   void _changePage(NavigationBarButtonType type) {
     switch(type) {
       case NavigationBarButtonType.weight:
-        MainScreenViewModel.loadWeightViewModel();
+        MainScreenViewModel.loadWeight();
       case NavigationBarButtonType.food:
         MainScreenViewModel.pageStreamController.sink.add(PageType.loading);
       case NavigationBarButtonType.workout:

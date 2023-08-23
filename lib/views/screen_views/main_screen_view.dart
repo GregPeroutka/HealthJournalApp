@@ -2,7 +2,11 @@
 
 import 'package:flutter/material.dart' hide NavigationBar;
 import 'package:my_health_journal/color_palette.dart';
+import 'package:my_health_journal/types/navigation_types.dart';
+import 'package:my_health_journal/view_models/main_screen_view_model.dart';
 import 'package:my_health_journal/views/navigation/navigation_bar.dart';
+import 'package:my_health_journal/views/pages/loading_page.dart';
+import 'package:my_health_journal/views/pages/weight_page.dart';
 
 class MainScreenView extends StatefulWidget {
   const MainScreenView({super.key});
@@ -13,9 +17,27 @@ class MainScreenView extends StatefulWidget {
 
 class _MainScreenViewState extends State<MainScreenView> {
 
+  Widget _currentPage = LoadingPage();
+
+  _MainScreenViewState() {
+    MainScreenViewModel.pageStreamController.stream.asBroadcastStream().listen((PageType pageType) {
+      setState(() {
+        switch (pageType) {
+          case PageType.loading:
+            _currentPage = LoadingPage();
+          case PageType.weight:
+            _currentPage = WeightPage();
+          case PageType.food:
+          case PageType.workout:
+          case PageType.settings:
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    
+
     return Material(
       color: ColorPalette.currentColorPalette.primaryBackground,
 
@@ -24,22 +46,24 @@ class _MainScreenViewState extends State<MainScreenView> {
         mainAxisAlignment: MainAxisAlignment.start,
 
         children: [
-          NavigationBar(),
-          Expanded(child: _Content())
+          NavigationBar(changePage: _changePage),
+          Expanded(child: _currentPage)
         ],
 
       )
     );
   }
-}
 
-class _Content extends Material {
-
-  @override
-  Widget? get child => Container(
-    decoration: BoxDecoration(
-      color: ColorPalette.currentColorPalette.primaryBackground,
-      border: Border.all(color: Colors.black)
-    ),
-  );
+  void _changePage(NavigationBarButtonType type) {
+    switch(type) {
+      case NavigationBarButtonType.weight:
+        MainScreenViewModel.loadWeightViewModel();
+      case NavigationBarButtonType.food:
+        MainScreenViewModel.pageStreamController.sink.add(PageType.loading);
+      case NavigationBarButtonType.workout:
+        MainScreenViewModel.pageStreamController.sink.add(PageType.loading);
+      case NavigationBarButtonType.settings:
+        MainScreenViewModel.pageStreamController.sink.add(PageType.loading);
+    }
+  }
 }

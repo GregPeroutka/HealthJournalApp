@@ -6,14 +6,10 @@ class MainScreenViewModel {
 
   static StreamController<PageType> pageStreamController = StreamController<PageType>();
 
-  MainScreenViewModel() {
-
-  }
-
-  static void loadWeightViewModel() {
+  static void loadWeight() {
     pageStreamController.sink.add(PageType.loading);
 
-    WeightPageViewModel.LoadData().then((value) => {
+    WeightPageViewModel.loadData().then((value) => {
       pageStreamController.sink.add(PageType.weight)
     });
   }

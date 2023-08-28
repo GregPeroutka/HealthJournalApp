@@ -12,9 +12,12 @@ User authentication functionality is complete
 Weight Logging page is currently under development
 
 ## Future Features
-
 - User Account Creation
 - Weight Logging Page [Current Work in Progress]
 - Diet Logging Page
 - Exercise Logging Page
 - Settings Page
+
+## Supported Platforms
+- iOS
+- Android

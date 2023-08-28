@@ -1,16 +1,23 @@
 # my_health_journal
 
-A new Flutter project.
+A mobile app project for journaling health and nutritional data
 
-## Getting Started
+## Project Goal
 
-This project is a starting point for a Flutter application.
+The goal for this project to create an application that can be used to log and keep track of health related data like one's weight, diet, and exercise. The design of the app is focused on robustness, ease of use and purposeful visualizations for the user's data. Each feature that is implemented has a simple purpose and clear implementation.
 
-A few resources to get you started if this is your first Flutter project:
+## Current State
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+User authentication functionality is complete
+Weight Logging page is currently under development
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Future Features
+- User Account Creation
+- Weight Logging Page [Current Work in Progress]
+- Diet Logging Page
+- Exercise Logging Page
+- Settings Page
+
+## Supported Platforms
+- iOS
+- Android

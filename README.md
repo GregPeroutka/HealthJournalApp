@@ -13,8 +13,8 @@ Weight Logging page is currently under development
 
 ## Future Features
 
-User Account Creation
-Weight Logging Page [Current Work in Progress]
-Diet Logging Page
-Exercise Logging Page
-Settings Page
+- User Account Creation
+- Weight Logging Page [Current Work in Progress]
+- Diet Logging Page
+- Exercise Logging Page
+- Settings Page

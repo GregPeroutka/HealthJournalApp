@@ -9,16 +9,14 @@ import '../firebase_options.dart';
 
 class ScreenControllerViewModel {
 
+  static final StreamController<ScreenType> _screenStreamController = StreamController<ScreenType>();
+  static final Stream<ScreenType> _screenBroadcastStream = _screenStreamController.stream.asBroadcastStream();
+  static final StreamSink<ScreenType> _screenStreamSink = _screenStreamController.sink;
 
-  static final ScreenControllerViewModel _instance = ScreenControllerViewModel._internal();
-  factory ScreenControllerViewModel() {
-    return _instance;
-  }
-  ScreenControllerViewModel._internal();
-
-  StreamController<ScreenType> screenStreamController = StreamController<ScreenType>();
+  static Stream<ScreenType> get screenBroadcastStream => _screenBroadcastStream;
+  static StreamSink<ScreenType> get screenStreamSink => _screenStreamSink;
   
-  Future<bool> initApp() async {
+  static Future<bool> initApp() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
@@ -26,10 +24,10 @@ class ScreenControllerViewModel {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if(user == null) {
         debugPrint('User is NOT logged in');
-        screenStreamController.sink.add(ScreenType.signin);
+        _screenStreamSink.add(ScreenType.signin);
       } else {
         debugPrint('User IS logged in');
-        screenStreamController.sink.add(ScreenType.main);
+        _screenStreamSink.add(ScreenType.main);
       }
     });
     

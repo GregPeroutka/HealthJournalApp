@@ -8,6 +8,6 @@ class ErrorScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text("ERROR");
+    return const Center(child: Text("ERROR"));
   }
 }

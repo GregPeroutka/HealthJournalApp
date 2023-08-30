@@ -47,8 +47,8 @@ class _MainScreenViewState extends State<MainScreenView> {
         }
       });
     });
-    super.initState();
 
+    super.initState();
   }
 
   @override

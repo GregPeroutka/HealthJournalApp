@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:my_health_journal/color_palette.dart';
 
 class LoadingPage extends StatefulWidget {
+  const LoadingPage({super.key});
+
   @override
-  State<StatefulWidget> createState() => _loadingPage();
+  State<StatefulWidget> createState() => _LoadingPage();
 
 }
 
-class _loadingPage extends State<LoadingPage> {
+class _LoadingPage extends State<LoadingPage> {
 
   @override
   Widget build(BuildContext context) {

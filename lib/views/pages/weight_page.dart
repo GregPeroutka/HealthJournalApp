@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:my_health_journal/color_palette.dart';
 import 'package:my_health_journal/types/database_types.dart';
@@ -107,7 +108,20 @@ class _WeightPageState extends State<WeightPage> {
                             decoration: BoxDecoration(
                               color: ColorPalette.currentColorPalette.primaryBackground,
                               borderRadius: BorderRadius.circular(_borderRadius),
-                            )
+                            ),
+                            child: Material(
+                              color: Colors.transparent,
+                              clipBehavior: Clip.hardEdge,
+                              child: TextField(
+                                
+                                autofocus: true,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                decoration: null
+                              ),
+                            ),
                           );
                         }
                       )
@@ -183,60 +197,58 @@ class _WeightPageState extends State<WeightPage> {
         color: ColorPalette.currentColorPalette.primaryBackground,
         borderRadius: BorderRadius.circular(_borderRadius),
       ),
-      child: Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-        
-              const Padding(padding: EdgeInsets.only(left: 8.0)),
-        
-              Padding(
-                padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-              
-                    Text(
-                      data == null
-                        ? '---'
-                        : '${data.weight.toString()} lbs',
-                      style: TextStyle(
-                        color: ColorPalette.currentColorPalette.text,
-                        fontSize: 24,
-                      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+      
+            const Padding(padding: EdgeInsets.only(left: 8.0)),
+      
+            Padding(
+              padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+            
+                  Text(
+                    data == null
+                      ? '---'
+                      : '${data.weight.toString()} lbs',
+                    style: TextStyle(
+                      color: ColorPalette.currentColorPalette.text,
+                      fontSize: 24,
                     ),
-                      
-                    Text(
-                      index == 0
-                        ? 'Yesterday'
-                        : '${index + 1} days ago',
-                      style: TextStyle(
-                        color: ColorPalette.currentColorPalette.hintText,
-                        fontSize: 18,
-                      ),
+                  ),
+                    
+                  Text(
+                    index == 0
+                      ? 'Yesterday'
+                      : '${index + 1} days ago',
+                    style: TextStyle(
+                      color: ColorPalette.currentColorPalette.hintText,
+                      fontSize: 18,
                     ),
-              
-                    Text(
-                      data == null
-                        ? '---'
-                        : DateFormat('MMMM d').format(data.timestamp.toDate()),
-                      style: TextStyle(
-                        color: ColorPalette.currentColorPalette.hintText,
-                        fontSize: 14,
-                      ),
+                  ),
+            
+                  Text(
+                    data == null
+                      ? '---'
+                      : DateFormat('MMMM d').format(data.timestamp.toDate()),
+                    style: TextStyle(
+                      color: ColorPalette.currentColorPalette.hintText,
+                      fontSize: 14,
                     ),
-                      
-                  ],
-                ),
+                  ),
+                    
+                ],
               ),
-        
-              const Spacer(),
-              
-              const Text('TEst')
-            ],
-          ),
+            ),
+      
+            const Spacer(),
+            
+            const Text('TEst')
+          ],
         ),
       )
     );

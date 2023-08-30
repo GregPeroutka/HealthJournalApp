@@ -2,13 +2,14 @@
 // The main purpose of this screen is to handle transitions between screens
 
 import 'package:flutter/material.dart';
+import 'package:my_health_journal/types/navigation_types.dart';
 import 'package:my_health_journal/views/screen_views/signin_screen_view.dart';
 import '../../view_models/screen_controller_view_model.dart';
 import 'error_screen_view.dart';
 import 'loading_screen_view.dart';
 import 'main_screen_view.dart';
 
-String _currentScreenView = 'loadingScreen';
+ScreenType _currentScreenType = ScreenType.loading;
 
 class ScreenControllerView extends StatefulWidget {
   static const ScreenControllerView _instance = ScreenControllerView._internal();
@@ -24,20 +25,28 @@ class ScreenControllerView extends StatefulWidget {
 class _ScreenControllerViewState extends State<ScreenControllerView> {
   final ScreenControllerViewModel _vm = ScreenControllerViewModel();
 
-  final Map<String, Widget?> screenViews = {
-    'loadingScreen': const LoadingScreenView(),
-    'errorScreen': const ErrorScreenView(),
-    'mainScreen': const MainScreenView(),
-    'loginScreen': const SigninScreenView()
-  };
+  final LoadingScreenView _loadingScreenView = const LoadingScreenView();
+  final ErrorScreenView _errorScreenView = const ErrorScreenView();
+  final SigninScreenView _signinScreenView = const SigninScreenView();
+  final MainScreenView _mainScreenView = const MainScreenView();
+
+  Map<ScreenType, Widget?> screenViews = {};
 
   _ScreenControllerViewState() {
-    _currentScreenView = 'loadingScreen';
 
-    final screenStreamSubscription = _vm.screenStreamController.stream.asBroadcastStream().listen((String event) => 
+    screenViews = {
+      ScreenType.loading: _loadingScreenView,
+      ScreenType.error: _errorScreenView,
+      ScreenType.main: _mainScreenView,
+      ScreenType.signin: _signinScreenView
+    };
+
+    _currentScreenType = ScreenType.loading;
+
+    final screenStreamSubscription = _vm.screenStreamController.stream.listen((ScreenType screenType) => 
       setState(() {
-        _currentScreenView = event.toString();
-        debugPrint('Screen Stream event received: ${event.toString()}');
+        _currentScreenType = screenType;
+        debugPrint('Screen Stream event received: ${screenType.toString()}');
       })
     );
     screenStreamSubscription.pause();
@@ -54,6 +63,6 @@ class _ScreenControllerViewState extends State<ScreenControllerView> {
 
   @override
   Widget build(BuildContext context) {
-    return screenViews[_currentScreenView] ?? const ErrorScreenView();
+    return screenViews[_currentScreenType] ?? const ErrorScreenView();
   }
 }

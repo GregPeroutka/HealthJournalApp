@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:my_health_journal/models/database_model.dart';
 import 'package:my_health_journal/types/database_types.dart';
 

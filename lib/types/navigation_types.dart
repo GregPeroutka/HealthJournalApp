@@ -16,6 +16,13 @@ enum PageType {
   settings
 }
 
+enum ScreenType {
+  error,
+  loading,
+  main,
+  signin
+}
+
 enum NavigationBarPosition {
   first,
   middle,

@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide NavigationBar;
 import 'package:my_health_journal/color_palette.dart';
 import 'package:my_health_journal/types/navigation_types.dart';
@@ -9,6 +12,7 @@ import 'package:my_health_journal/views/pages/loading_page.dart';
 import 'package:my_health_journal/views/pages/weight_page.dart';
 
 class MainScreenView extends StatefulWidget {
+
   const MainScreenView({super.key});
 
   @override
@@ -18,10 +22,19 @@ class MainScreenView extends StatefulWidget {
 class _MainScreenViewState extends State<MainScreenView> {
 
   Widget _currentPage = LoadingPage();
+  StreamSubscription<PageType>? pageStreamSubscription;
 
   _MainScreenViewState() {
+
     MainScreenViewModel.loadWeight();
-    MainScreenViewModel.pageStreamController.stream.asBroadcastStream().listen((PageType pageType) {
+    
+  }
+
+  @override
+  void initState() {
+
+    pageStreamSubscription = MainScreenViewModel.pageBroadcastStream.listen((PageType pageType) {
+      debugPrint('Test: $pageType');
       setState(() {
         switch (pageType) {
           case PageType.loading:
@@ -34,6 +47,16 @@ class _MainScreenViewState extends State<MainScreenView> {
         }
       });
     });
+    super.initState();
+
+  }
+
+  @override
+  void dispose() {
+
+    pageStreamSubscription?.cancel();
+    super.dispose();
+
   }
 
   @override
@@ -60,11 +83,12 @@ class _MainScreenViewState extends State<MainScreenView> {
       case NavigationBarButtonType.weight:
         MainScreenViewModel.loadWeight();
       case NavigationBarButtonType.food:
-        MainScreenViewModel.pageStreamController.sink.add(PageType.loading);
+        MainScreenViewModel.pageStreamSink.add(PageType.loading);
       case NavigationBarButtonType.workout:
-        MainScreenViewModel.pageStreamController.sink.add(PageType.loading);
+        MainScreenViewModel.pageStreamSink.add(PageType.loading);
       case NavigationBarButtonType.settings:
-        MainScreenViewModel.pageStreamController.sink.add(PageType.loading);
+        FirebaseAuth.instance.signOut();
+        //MainScreenViewModel.pageStreamController.sink.add(PageType.loading);
     }
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:my_health_journal/color_palette.dart';
 import 'package:my_health_journal/types/database_types.dart';
 import 'package:my_health_journal/view_models/weight_page_view_model.dart';
+import 'package:my_health_journal/views/pages/weight_page/add_weight_dialog.dart';
 
 class WeightPage extends StatefulWidget {
   const WeightPage({super.key});
@@ -22,6 +22,8 @@ class _WeightPageState extends State<WeightPage> {
 
   List<WeightData?> historyWeightData = List.empty();
   WeightData? todaysWeightData;
+
+  TextEditingController addWeightTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -87,47 +89,25 @@ class _WeightPageState extends State<WeightPage> {
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
                     color: ColorPalette.currentColorPalette.primary,
-                    borderRadius: BorderRadius.circular(_borderRadius)
+                    borderRadius: BorderRadius.circular(1000)
                   ),
                   child: TextButton(
                     onPressed: () => {
 
-
-
-                      // :D
                       showDialog(
                         context: context, 
                         builder: (context) {
-                          return Container(
-                            margin: const EdgeInsets.fromLTRB(
-                              40,
-                              40,
-                              40,
-                              120
-                            ),
-                            decoration: BoxDecoration(
-                              color: ColorPalette.currentColorPalette.primaryBackground,
-                              borderRadius: BorderRadius.circular(_borderRadius),
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              clipBehavior: Clip.hardEdge,
-                              child: TextField(
-                                
-                                autofocus: true,
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                decoration: null
-                              ),
-                            ),
+
+                          return AddWeightDialog(
+                            onDone: () => {
+                              debugPrint('test :D'),
+                              Navigator.of(context).pop()
+                            },
+                            textEditingController: addWeightTextController, 
                           );
+
                         }
                       )
-
-
-
 
                     },
                     child: Padding(

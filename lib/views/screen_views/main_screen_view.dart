@@ -9,7 +9,7 @@ import 'package:my_health_journal/types/navigation_types.dart';
 import 'package:my_health_journal/view_models/main_screen_view_model.dart';
 import 'package:my_health_journal/views/navigation/navigation_bar.dart';
 import 'package:my_health_journal/views/pages/loading_page.dart';
-import 'package:my_health_journal/views/pages/weight_page.dart';
+import 'package:my_health_journal/views/pages/weight_page/weight_page.dart';
 
 class MainScreenView extends StatefulWidget {
 

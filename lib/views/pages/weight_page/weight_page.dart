@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_health_journal/color_palette.dart';
 import 'package:my_health_journal/types/database_types.dart';
 import 'package:my_health_journal/view_models/weight_page_view_model.dart';
-import 'package:my_health_journal/views/pages/weight_page/add_weight_dialog.dart';
+import 'package:my_health_journal/views/pages/weight_page/weight_dialog.dart';
 
 class WeightPage extends StatefulWidget {
   const WeightPage({super.key});
@@ -23,7 +24,7 @@ class _WeightPageState extends State<WeightPage> {
   List<WeightData?> historyWeightData = List.empty();
   WeightData? todaysWeightData;
 
-  TextEditingController addWeightTextController = TextEditingController();
+  TextEditingController weightTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,18 +67,72 @@ class _WeightPageState extends State<WeightPage> {
     
               Visibility(
                 visible: todaysWeightData != null,
-                child: Center(
-                  child: Text(
-                    todaysWeightData == null
-                      ? '---'
-                      : '${todaysWeightData?.weight} lbs',
-                    style: TextStyle(
-                      color: ColorPalette.currentColorPalette.text,
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Rubik",
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                
+                    Text(
+                      todaysWeightData == null
+                        ? '---'
+                        : '${todaysWeightData?.weight} lbs',
+                      style: TextStyle(
+                        color: ColorPalette.currentColorPalette.text,
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Rubik",
+                      ),
                     ),
-                  ),
+                
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 16),
+                        child: IconButton(
+                          onPressed: () {
+
+                            weightTextController.text = (todaysWeightData != null)
+                              ? todaysWeightData!.weight.toString()
+                              : '';
+
+                            showDialog(
+                              context: context, 
+                              builder: (context) {
+
+                                return WeightDialog(
+                                  onDone: () {
+                                    try {
+                                      double curWeight = double.parse(weightTextController.text);
+                                      if(todaysWeightData != null && todaysWeightData!.weight != curWeight) {
+                                        WeightPageViewModel.overwriteWeightData(todaysWeightData!, curWeight).then((value) => {
+                                          setState(() {
+                                            Navigator.of(context).pop();
+                                          })
+                                        });
+                                      } else {
+                                        Navigator.of(context).pop();
+                                      }
+                                      
+                                    } on FormatException catch (e) {
+                                      debugPrint(e.toString());
+                                    }
+                                  },
+
+                                  textEditingController: weightTextController, 
+                                );
+
+                              }
+                            );
+                          },
+                          icon: Icon(
+                            Icons.edit,
+                            size: 24,
+                            color: ColorPalette.currentColorPalette.hintText
+                          )
+                        ),
+                      ),
+                    )
+                
+                  ],
                 ),
               ),
 
@@ -98,12 +153,23 @@ class _WeightPageState extends State<WeightPage> {
                         context: context, 
                         builder: (context) {
 
-                          return AddWeightDialog(
-                            onDone: () => {
-                              debugPrint('test :D'),
-                              Navigator.of(context).pop()
+                          return WeightDialog(
+                            onDone: () {
+                              try {
+                                double weight = double.parse(weightTextController.text);
+                                WeightPageViewModel.writeTodaysWeightData(weight).then((value) => {
+                                  setState(() {
+                                    Navigator.of(context).pop();
+                                  })
+                                });
+                              } on FormatException catch (e) {
+                                debugPrint(e.toString());
+                              }
+                              
                             },
-                            textEditingController: addWeightTextController, 
+
+                            textEditingController: weightTextController, 
+
                           );
 
                         }
@@ -172,63 +238,120 @@ class _WeightPageState extends State<WeightPage> {
 
     return Container(
       margin: const EdgeInsets.all(8.0),
+      clipBehavior: Clip.hardEdge,
 
       decoration: BoxDecoration(
         color: ColorPalette.currentColorPalette.primaryBackground,
         borderRadius: BorderRadius.circular(_borderRadius),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-      
-            const Padding(padding: EdgeInsets.only(left: 8.0)),
-      
-            Padding(
-              padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-            
-                  Text(
-                    data == null
-                      ? '---'
-                      : '${data.weight.toString()} lbs',
-                    style: TextStyle(
-                      color: ColorPalette.currentColorPalette.text,
-                      fontSize: 24,
-                    ),
+
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          
+          onTap: () {
+            weightTextController.text = (data != null)
+              ? data.weight.toString()
+              : '';
+
+            showDialog(
+              context: context, 
+              builder: (context) {
+
+                return WeightDialog(
+                  onDone: () {
+                    try {
+                      double curWeight = double.parse(weightTextController.text);
+
+                      if(data == null) {
+
+                        // Writes WeightData for today minus 'index + 1' amount of days
+                        WeightPageViewModel.writeWeightData(Timestamp.fromDate(Timestamp.now().toDate().subtract(Duration(days: index + 1))), curWeight).then((value) => {
+                          setState(() {
+                            Navigator.of(context).pop();
+                          })
+                        });
+                        
+                      } else {
+
+                        if(data.weight != curWeight) {
+                          WeightPageViewModel.overwriteWeightData(data, curWeight).then((value) => {
+                            setState(() {
+                              Navigator.of(context).pop();
+                            }
+                          )});
+                        } else {
+                          Navigator.of(context).pop();
+                        }
+
+                      }
+                      
+                    } on FormatException catch (e) {
+                      debugPrint(e.toString());
+                    }
+                  },
+
+                  textEditingController: weightTextController, 
+                );
+
+              }
+            );
+          },
+
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+          
+                const Padding(padding: EdgeInsets.only(left: 8.0)),
+          
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                
+                      Text(
+                        data == null
+                          ? '---'
+                          : '${data.weight.toString()} lbs',
+                        style: TextStyle(
+                          color: ColorPalette.currentColorPalette.text,
+                          fontSize: 24,
+                        ),
+                      ),
+                        
+                      Text(
+                        index == 0
+                          ? 'Yesterday'
+                          : '${index + 1} days ago',
+                        style: TextStyle(
+                          color: ColorPalette.currentColorPalette.hintText,
+                          fontSize: 18,
+                        ),
+                      ),
+                
+                      Text(
+                        data == null
+                          ? '---'
+                          : DateFormat('MMMM d').format(data.timestamp.toDate()),
+                        style: TextStyle(
+                          color: ColorPalette.currentColorPalette.hintText,
+                          fontSize: 14,
+                        ),
+                      ),
+                        
+                    ],
                   ),
-                    
-                  Text(
-                    index == 0
-                      ? 'Yesterday'
-                      : '${index + 1} days ago',
-                    style: TextStyle(
-                      color: ColorPalette.currentColorPalette.hintText,
-                      fontSize: 18,
-                    ),
-                  ),
-            
-                  Text(
-                    data == null
-                      ? '---'
-                      : DateFormat('MMMM d').format(data.timestamp.toDate()),
-                    style: TextStyle(
-                      color: ColorPalette.currentColorPalette.hintText,
-                      fontSize: 14,
-                    ),
-                  ),
-                    
-                ],
-              ),
+                ),
+          
+                const Spacer(),
+                
+                const Text('TEst')
+              ],
             ),
-      
-            const Spacer(),
-            
-            const Text('TEst')
-          ],
+          ),
         ),
       )
     );

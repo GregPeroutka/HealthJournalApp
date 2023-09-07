@@ -8,7 +8,7 @@ class DatabaseModel {
 
   static Future<void> writeWeightData(WeightData weightData) async {
     
-    return _weightDataCollectionReference.doc().set({
+    return _weightDataCollectionReference.doc(weightData.id).set({
       'Weight': weightData.weight,
       'Note': weightData.note,
       'TimeStamp': weightData.timestamp
@@ -25,7 +25,8 @@ class DatabaseModel {
         WeightData(
           note: element.data()['Note'],
           timestamp: element.data()['TimeStamp'],
-          weight: element.data()['Weight']
+          weight: element.data()['Weight'],
+          id: element.id
         )
       );
     }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_health_journal/models/database_model.dart';
 import 'package:my_health_journal/types/database_types.dart';
 
@@ -12,6 +13,38 @@ class WeightPageViewModel {
     _isDataLoaded = true;
 
     return false;
+  }
+
+  static Future writeTodaysWeightData(double weight) async {
+    Timestamp curTimestamp = Timestamp.now();
+    WeightData todaysWeightData = WeightData(
+      note: '', 
+      timestamp: curTimestamp,
+      weight: weight,
+      id: curTimestamp.toDate().toString()
+    );
+
+    await DatabaseModel.writeWeightData(todaysWeightData);
+    await loadData();
+  }
+
+  static Future overwriteWeightData(WeightData weightData, double newWeight) async {
+    weightData.weight = newWeight;
+
+    await DatabaseModel.writeWeightData(weightData);
+    await loadData();
+  }
+
+  static Future writeWeightData(Timestamp timestamp, double weight) async {
+    WeightData todaysWeightData = WeightData(
+      note: '',
+      timestamp: timestamp,
+      weight: weight,
+      id: timestamp.toDate().toString()
+    );
+
+    await DatabaseModel.writeWeightData(todaysWeightData);
+    await loadData();
   }
 
   static List<WeightData?> getLastNDaysWeightData(int n) {

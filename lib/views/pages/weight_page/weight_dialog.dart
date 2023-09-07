@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_health_journal/color_palette.dart';
 
-class AddWeightDialog extends StatefulWidget{
+class WeightDialog extends StatefulWidget{
   final Function onDone;
   final TextEditingController textEditingController;
 
-  const AddWeightDialog({super.key, required this.onDone, required this.textEditingController});
+  const WeightDialog({super.key, required this.onDone, required this.textEditingController});
 
   @override
-  State<StatefulWidget> createState() => _AddWeightDialog();
+  State<StatefulWidget> createState() => _WeightDialog();
 
 }
 
-class _AddWeightDialog extends State<AddWeightDialog> {
+class _WeightDialog extends State<WeightDialog> {
 
   final double _borderRadius = 20;
   

@@ -6,6 +6,7 @@ class WeightData {
   Timestamp timestamp;
   double weight;
   bool isBlank;
+  String id;
 
-  WeightData({required this.note, required this.timestamp, this.weight = 0, this.isBlank = false});
+  WeightData({required this.note, required this.timestamp, required this.weight, required this.id, this.isBlank = false});
 }

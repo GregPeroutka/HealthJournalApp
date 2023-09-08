@@ -51,181 +51,20 @@ class _WeightPageState extends State<WeightPage> {
     
             children: [
     
-              const Padding(padding: EdgeInsets.only(top: 8)),
+              _verticalPadding(8),
     
-              Center(
-                child: Text(
-                  'Today',
-                  style: TextStyle(
-                    color: ColorPalette.currentColorPalette.hintText,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "Rubik",
-                  ),
-                ),
-              ),
+              _pageHeader(),
+              _addWeightButton(),
+              _todaysWeightWidget(),
+
+              _verticalPadding(8),
+
+              _graphWidget(),
     
-              Visibility(
-                visible: todaysWeightData != null,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                
-                    Text(
-                      todaysWeightData == null
-                        ? '---'
-                        : '${todaysWeightData?.weight} lbs',
-                      style: TextStyle(
-                        color: ColorPalette.currentColorPalette.text,
-                        fontSize: 50,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Rubik",
-                      ),
-                    ),
-                
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 16),
-                        child: IconButton(
-                          onPressed: () {
-
-                            weightTextController.text = (todaysWeightData != null)
-                              ? todaysWeightData!.weight.toString()
-                              : '';
-
-                            showDialog(
-                              context: context, 
-                              builder: (context) {
-
-                                return WeightDialog(
-                                  onDone: () {
-                                    try {
-                                      double curWeight = double.parse(weightTextController.text);
-                                      if(todaysWeightData != null && todaysWeightData!.weight != curWeight) {
-                                        WeightPageViewModel.overwriteWeightData(todaysWeightData!, curWeight).then((value) => {
-                                          setState(() {
-                                            Navigator.of(context).pop();
-                                          })
-                                        });
-                                      } else {
-                                        Navigator.of(context).pop();
-                                      }
-                                      
-                                    } on FormatException catch (e) {
-                                      debugPrint(e.toString());
-                                    }
-                                  },
-
-                                  textEditingController: weightTextController, 
-                                );
-
-                              }
-                            );
-                          },
-                          icon: Icon(
-                            Icons.edit,
-                            size: 24,
-                            color: ColorPalette.currentColorPalette.hintText
-                          )
-                        ),
-                      ),
-                    )
-                
-                  ],
-                ),
-              ),
-
-              const Padding(padding: EdgeInsets.only(top: 8)),
-
-              Visibility(
-                visible: todaysWeightData == null,
-                child: Container(
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    color: ColorPalette.currentColorPalette.primary,
-                    borderRadius: BorderRadius.circular(1000)
-                  ),
-                  child: TextButton(
-                    onPressed: () => {
-
-                      showDialog(
-                        context: context, 
-                        builder: (context) {
-
-                          return WeightDialog(
-                            onDone: () {
-                              try {
-                                double weight = double.parse(weightTextController.text);
-                                WeightPageViewModel.writeTodaysWeightData(weight).then((value) => {
-                                  setState(() {
-                                    Navigator.of(context).pop();
-                                  })
-                                });
-                              } on FormatException catch (e) {
-                                debugPrint(e.toString());
-                              }
-                              
-                            },
-
-                            textEditingController: weightTextController, 
-
-                          );
-
-                        }
-                      )
-
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Add Weight',
-                        style: TextStyle(
-                          color: ColorPalette.currentColorPalette.text,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  )
-                ),
-              ),
-
-              Container(
-                height: 200,
-                margin: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: ColorPalette.currentColorPalette.primaryBackground,
-                  borderRadius: BorderRadius.circular(_borderRadius),
-                )
-              ),
+              _verticalPadding(8),
     
-              const Padding(padding: EdgeInsets.only(top: 8)),
-    
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 24.0, bottom: 8),
-                  child: Text(
-                    'Last $historyCount Days',
-                    style: TextStyle(
-                      color: ColorPalette.currentColorPalette.hintText,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-    
-              Expanded(
-                child: ListView.builder(
-                  itemCount: historyCount,
-    
-                  itemBuilder: (BuildContext context, int index) {
-                    return historyContainer(index, historyWeightData[index]);
-                  },
-                ),
-              ),
+              _recentHistoryHeaderWidget(),
+              _historyListWidget()
   
             ],
           )
@@ -234,7 +73,195 @@ class _WeightPageState extends State<WeightPage> {
     );
   }
 
-  Container historyContainer(int index, WeightData? data) {
+  Widget _verticalPadding(double space) {
+    return Padding(padding: EdgeInsets.only(top: space));
+  }
+
+  Widget _pageHeader() {
+    return Center(
+      child: Text(
+        'Today',
+        style: TextStyle(
+          color: ColorPalette.currentColorPalette.hintText,
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+          fontFamily: "Rubik",
+        ),
+      ),
+    );
+  }
+
+  Widget _addWeightButton() {
+    return Visibility(
+      visible: todaysWeightData != null,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+      
+          Text(
+            todaysWeightData == null
+              ? '---'
+              : '${todaysWeightData?.weight} lbs',
+            style: TextStyle(
+              color: ColorPalette.currentColorPalette.text,
+              fontSize: 50,
+              fontWeight: FontWeight.bold,
+              fontFamily: "Rubik",
+            ),
+          ),
+      
+          Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: IconButton(
+                onPressed: () {
+
+                  weightTextController.text = (todaysWeightData != null)
+                    ? todaysWeightData!.weight.toString()
+                    : '';
+
+                  showDialog(
+                    context: context, 
+                    builder: (context) {
+
+                      return WeightDialog(
+                        onDone: () {
+                          try {
+                            double curWeight = double.parse(weightTextController.text);
+                            if(todaysWeightData != null && todaysWeightData!.weight != curWeight) {
+                              WeightPageViewModel.overwriteWeightData(todaysWeightData!, curWeight).then((value) => {
+                                setState(() {
+                                  Navigator.of(context).pop();
+                                })
+                              });
+                            } else {
+                              Navigator.of(context).pop();
+                            }
+                            
+                          } on FormatException catch (e) {
+                            debugPrint(e.toString());
+                          }
+                        },
+
+                        textEditingController: weightTextController, 
+                      );
+
+                    }
+                  );
+                },
+                icon: Icon(
+                  Icons.edit,
+                  size: 24,
+                  color: ColorPalette.currentColorPalette.hintText
+                )
+              ),
+            ),
+          )
+      
+        ],
+      ),
+    );
+
+  }
+
+  Widget _todaysWeightWidget() {
+    return Visibility(
+      visible: todaysWeightData == null,
+      child: Container(
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          color: ColorPalette.currentColorPalette.primary,
+          borderRadius: BorderRadius.circular(1000)
+        ),
+        child: TextButton(
+          onPressed: () => {
+
+            weightTextController.text = '',
+            showDialog(
+              context: context, 
+              builder: (context) {
+
+                return WeightDialog(
+                  onDone: () {
+                    try {
+                      double weight = double.parse(weightTextController.text);
+                      WeightPageViewModel.writeTodaysWeightData(weight).then((value) => {
+                        setState(() {
+                          Navigator.of(context).pop();
+                        })
+                      });
+                    } on FormatException catch (e) {
+                      debugPrint(e.toString());
+                    }
+                    
+                  },
+
+                  textEditingController: weightTextController, 
+
+                );
+
+              }
+            )
+
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Add Weight',
+              style: TextStyle(
+                color: ColorPalette.currentColorPalette.text,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        )
+      ),
+    );
+  }
+
+  Widget _graphWidget() {
+    return Container(
+      height: 200,
+      margin: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: ColorPalette.currentColorPalette.primaryBackground,
+        borderRadius: BorderRadius.circular(_borderRadius),
+      )
+    );
+  }
+
+  Widget _recentHistoryHeaderWidget() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 24.0, bottom: 8),
+        child: Text(
+          'Last $historyCount Days',
+          style: TextStyle(
+            color: ColorPalette.currentColorPalette.hintText,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _historyListWidget() {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: historyCount,
+
+        itemBuilder: (BuildContext context, int index) {
+          return historyContainer(index, historyWeightData[index]);
+        },
+      ),
+    );
+  }
+
+  Widget historyContainer(int index, WeightData? data) {
 
     return Container(
       margin: const EdgeInsets.all(8.0),

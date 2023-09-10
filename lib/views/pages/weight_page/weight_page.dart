@@ -40,7 +40,7 @@ class _WeightPageState extends State<WeightPage> {
       child: Padding(
         padding: EdgeInsets.fromLTRB(
           _containerPadding,
-          _containerPadding,
+          0,
           _containerPadding,
           0
         ),
@@ -61,14 +61,13 @@ class _WeightPageState extends State<WeightPage> {
               _addWeightButton(),
               _todaysWeightWidget(),
     
-              _verticalPadding(8),
-    
               _graphDropDownMenu(),
               WeightGraph(timeSpan: _curGraphTimeSpan),
     
-              _verticalPadding(8),
-    
               _recentHistoryHeaderWidget(),
+
+              _verticalPadding(8),
+
               _historyListWidget()
     
             ],
@@ -297,7 +296,7 @@ class _WeightPageState extends State<WeightPage> {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.only(left: 24.0, bottom: 8),
+        padding: const EdgeInsets.only(left: 24.0),
         child: Text(
           'Last $historyCount Days',
           style: TextStyle(
@@ -313,11 +312,10 @@ class _WeightPageState extends State<WeightPage> {
   Widget _historyListWidget() {
     return Expanded(
       child: ListView.builder(
-        reverse: true,
         itemCount: historyCount,
 
         itemBuilder: (BuildContext context, int index) {
-          return historyContainer(index, historyWeightData[index]);
+          return historyContainer(historyCount - index, historyWeightData[historyCount - index - 1]);
         },
       ),
     );
@@ -412,7 +410,7 @@ class _WeightPageState extends State<WeightPage> {
                       ),
                         
                       Text(
-                        index == historyCount - 1
+                        index == historyCount
                           ? 'Yesterday'
                           : '${historyCount - index} days ago',
                         style: TextStyle(

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -82,14 +84,17 @@ class _WeightGraphState extends State<WeightGraph> {
             show: false,
           ),
 
-          minX: -0.5,
+          minX: 0,
           maxX: _days.toDouble(),
           minY: double.parse((_minWeight - _verticalMargins).toStringAsFixed(1)),
           maxY: double.parse((_maxWeight + _verticalMargins).toStringAsFixed(1)),
 
           lineBarsData: _barData,
           lineTouchData: _lineTouchData,
-          gridData: const FlGridData(show: false),
+          gridData: const FlGridData(
+            show: true,
+            drawVerticalLine: false
+          ),
           titlesData: FlTitlesData(
             leftTitles: _getLeftAxisTitles(),
             bottomTitles: _bottomAxisTitles,
@@ -136,7 +141,7 @@ class _WeightGraphState extends State<WeightGraph> {
           return SideTitleWidget(
             axisSide: AxisSide.left,
             child: Text(
-              value.toString(),
+              value.toStringAsFixed(1),
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
@@ -180,9 +185,6 @@ class _WeightGraphState extends State<WeightGraph> {
 
           DateTime now = DateTime.now();
 
-          if(value == -0.5) {
-            return const Text('');
-          }
           if(value == _days) {
             return bottomLabel('Today');
           }
@@ -213,6 +215,16 @@ class _WeightGraphState extends State<WeightGraph> {
   List<LineChartBarData> _getBarData() {
     return [
       LineChartBarData(
+        belowBarData: BarAreaData(
+          show: true,
+          gradient: LinearGradient(
+            colors: [
+              ColorPalette.currentColorPalette.primary.withOpacity(0.1),
+              ColorPalette.currentColorPalette.secondary.withOpacity(0.2)
+            ]
+          )
+        ),
+        isStrokeCapRound: true,
         barWidth: barWidth,
         dotData: const FlDotData(show: false),
         color: ColorPalette.currentColorPalette.primary,

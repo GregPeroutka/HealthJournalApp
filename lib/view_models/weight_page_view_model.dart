@@ -1,18 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:my_health_journal/models/database_model.dart';
 import 'package:my_health_journal/types/database_types.dart';
 
 class WeightPageViewModel {
 
   static List<WeightData> _currentData = List<WeightData>.empty();
-  static bool _isDataLoaded = false;
+  static List<WeightData> get currentData => _currentData;
 
-  static Future<bool> loadData() async {
-    _isDataLoaded = false;
+  static WeightData? _todaysWeightData;
+  static WeightData? get todaysWeightData => _todaysWeightData;
+
+  static Future loadData() async {
+    DateTime curTime = DateTime.now();
+
     _currentData = await DatabaseModel.getWeightData();
-    _isDataLoaded = true;
 
-    return false;
+    try {
+      _todaysWeightData = _currentData.firstWhere((element) {
+        DateTime elementDateTime = element.timestamp.toDate();
+
+        return elementDateTime.year == curTime.year &&
+          elementDateTime.month == curTime.month &&
+          elementDateTime.day == curTime.day;
+      });
+    } on StateError catch (e){
+      _todaysWeightData = null;
+      debugPrint(e.toString());
+    }
   }
 
   static Future writeTodaysWeightData(double weight) async {
@@ -49,14 +64,10 @@ class WeightPageViewModel {
 
   static List<WeightData?> getLastNDaysWeightData(int n) {
 
-    if(!_isDataLoaded) {
-      return List<WeightData?>.filled(n, null);
-    }
-
     DateTime curTime = DateTime.now();
     List<WeightData?> curWeightData = List<WeightData?>.empty(growable: true);
 
-    for (int i = 1; i <= n; i++) {
+    for (int i = n; i >= 0; i--) {
       // get (today - i days)'s weight data
       Iterable<WeightData> it = _currentData.where((element) {
         DateTime elementDateTime = element.timestamp.toDate();
@@ -75,25 +86,6 @@ class WeightPageViewModel {
     }
 
     return curWeightData;
-  }
-
-  static WeightData? getTodaysWeightData() {
-    DateTime curTime = DateTime.now();
-
-    WeightData? todaysWeightData;
-    try {
-      todaysWeightData = _currentData.firstWhere((element) {
-        DateTime elementDateTime = element.timestamp.toDate();
-
-        return elementDateTime.year == curTime.year &&
-              elementDateTime.month == curTime.month &&
-              elementDateTime.day == curTime.day;
-      });
-    } on StateError {
-      return null;
-    }
-
-    return todaysWeightData;
   }
 
 }

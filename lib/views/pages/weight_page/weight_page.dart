@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_health_journal/color_palette.dart';
 import 'package:my_health_journal/types/database_types.dart';
+import 'package:my_health_journal/types/weight_types.dart';
 import 'package:my_health_journal/view_models/weight_page_view_model.dart';
 import 'package:my_health_journal/views/pages/weight_page/weight_dialog.dart';
+import 'package:my_health_journal/views/pages/weight_page/weight_graph.dart';
 
 class WeightPage extends StatefulWidget {
   const WeightPage({super.key});
@@ -26,10 +28,12 @@ class _WeightPageState extends State<WeightPage> {
 
   TextEditingController weightTextController = TextEditingController();
 
+  GraphTimeSpan _curGraphTimeSpan = GraphTimeSpan.week;
+
   @override
   Widget build(BuildContext context) {
     historyWeightData = WeightPageViewModel.getLastNDaysWeightData(historyCount);
-    todaysWeightData = WeightPageViewModel.getTodaysWeightData();
+    todaysWeightData = WeightPageViewModel.todaysWeightData;
 
     return SafeArea(
       bottom: false,
@@ -56,16 +60,17 @@ class _WeightPageState extends State<WeightPage> {
               _pageHeader(),
               _addWeightButton(),
               _todaysWeightWidget(),
-
+    
               _verticalPadding(8),
-
-              _graphWidget(),
+    
+              _graphDropDownMenu(),
+              WeightGraph(timeSpan: _curGraphTimeSpan),
     
               _verticalPadding(8),
     
               _recentHistoryHeaderWidget(),
               _historyListWidget()
-  
+    
             ],
           )
         ),
@@ -221,14 +226,70 @@ class _WeightPageState extends State<WeightPage> {
     );
   }
 
-  Widget _graphWidget() {
-    return Container(
-      height: 200,
-      margin: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: ColorPalette.currentColorPalette.primaryBackground,
-        borderRadius: BorderRadius.circular(_borderRadius),
-      )
+  Widget _graphDropDownMenu() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          height: 36,
+          decoration: BoxDecoration(
+            color: ColorPalette.currentColorPalette.primaryBackground,
+            borderRadius: BorderRadius.circular(1000)
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16, right: 8),
+            child: DropdownButton<GraphTimeSpan>(
+
+              value: _curGraphTimeSpan,
+              items: const [
+
+                DropdownMenuItem(
+                  value: GraphTimeSpan.week, 
+                  child: Text('Last Week')
+                ),
+                DropdownMenuItem(
+                  value: GraphTimeSpan.month, 
+                  child: Text('Last Month')
+                ),
+                DropdownMenuItem(
+                  value: GraphTimeSpan.sixMonths, 
+                  child: Text('Last 6 Months')
+                ),
+                DropdownMenuItem(
+                  value: GraphTimeSpan.year, 
+                  child: Text('Last year')
+                ),
+                DropdownMenuItem(
+                  value: GraphTimeSpan.allTime,
+                  child: Text('All Time')
+                ),
+
+              ],
+          
+              style: TextStyle(
+                color: ColorPalette.currentColorPalette.text,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Rubik",
+              ),
+              dropdownColor: ColorPalette.currentColorPalette.secondaryBackground,
+              borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
+              underline: const SizedBox(),
+              isExpanded: false,
+              alignment: Alignment.center,
+              iconEnabledColor: ColorPalette.currentColorPalette.hintText,
+          
+              onChanged: (value) {
+                setState(() {
+                  _curGraphTimeSpan = value ?? GraphTimeSpan.week;
+                });
+              }
+
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -252,6 +313,7 @@ class _WeightPageState extends State<WeightPage> {
   Widget _historyListWidget() {
     return Expanded(
       child: ListView.builder(
+        reverse: true,
         itemCount: historyCount,
 
         itemBuilder: (BuildContext context, int index) {
@@ -350,9 +412,9 @@ class _WeightPageState extends State<WeightPage> {
                       ),
                         
                       Text(
-                        index == 0
+                        index == historyCount - 1
                           ? 'Yesterday'
-                          : '${index + 1} days ago',
+                          : '${historyCount - index} days ago',
                         style: TextStyle(
                           color: ColorPalette.currentColorPalette.hintText,
                           fontSize: 18,
@@ -362,7 +424,7 @@ class _WeightPageState extends State<WeightPage> {
                       Text(
                         data == null
                           ? '---'
-                          : DateFormat('MMMM d').format(data.timestamp.toDate()),
+                          : DateFormat('EEEE, MMMM d').format(data.timestamp.toDate()),
                         style: TextStyle(
                           color: ColorPalette.currentColorPalette.hintText,
                           fontSize: 14,

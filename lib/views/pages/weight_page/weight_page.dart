@@ -293,30 +293,60 @@ class _WeightPageState extends State<WeightPage> {
   }
 
   Widget _recentHistoryHeaderWidget() {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 24.0),
-        child: Text(
-          'Last $historyCount Days',
-          style: TextStyle(
-            color: ColorPalette.currentColorPalette.hintText,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 24.0),
+            child: Text(
+              'Last $historyCount Days',
+              style: TextStyle(
+                color: ColorPalette.currentColorPalette.hintText,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
-      ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: Container(
+              decoration: BoxDecoration(
+                color: ColorPalette.currentColorPalette.primaryBackground,
+                shape: BoxShape.circle
+              ),
+              child: IconButton(
+                iconSize: 30,
+                color: ColorPalette.currentColorPalette.hintText,
+                icon: const Icon(Icons.calendar_month),
+                onPressed: () {},
+              ),
+            ),
+          )
+        )
+      ]
     );
   }
 
   Widget _historyListWidget() {
     return Expanded(
-      child: ListView.builder(
-        itemCount: historyCount,
-
-        itemBuilder: (BuildContext context, int index) {
-          return historyContainer(historyCount - index, historyWeightData[historyCount - index - 1]);
-        },
+      child: Container(
+        margin: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+        decoration: BoxDecoration(
+          borderRadius:BorderRadius.circular(_borderRadius),
+          color: ColorPalette.currentColorPalette.secondaryBackground
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: ListView.builder(
+          itemCount: historyCount,
+      
+          itemBuilder: (BuildContext context, int index) {
+            return historyContainer(historyCount - index, historyWeightData[historyCount - index - 1]);
+          },
+        ),
       ),
     );
   }
@@ -324,7 +354,7 @@ class _WeightPageState extends State<WeightPage> {
   Widget historyContainer(int index, WeightData? data) {
 
     return Container(
-      margin: const EdgeInsets.all(8.0),
+      margin: const EdgeInsets.only(top: 16),
       clipBehavior: Clip.hardEdge,
 
       decoration: BoxDecoration(

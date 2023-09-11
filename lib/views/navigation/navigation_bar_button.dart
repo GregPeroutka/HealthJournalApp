@@ -7,14 +7,14 @@ class NavigationBarButton extends StatefulWidget {
   const NavigationBarButton({
     super.key, 
 
-    this.isSelected = false,
+    required this.isSelected,
     this.index,
     this.pos,
     this.buttonType,
     this.buttonCallBack
   });
   
-  final bool? isSelected;
+  final bool isSelected;
   final int? index;
   final NavigationBarPosition? pos;
   final NavigationBarButtonType? buttonType;
@@ -46,8 +46,12 @@ class _NavigationBarButtonState extends State<NavigationBarButton>{
         ),
 
         decoration: BoxDecoration(
-          color: widget.isSelected! ? ColorPalette.currentColorPalette.primary : ColorPalette.currentColorPalette.primaryBackground,
-          shape: BoxShape.circle
+          color: ColorPalette.currentColorPalette.primaryBackground,
+          shape: BoxShape.circle,
+          border: Border.all(
+            width: 4,
+            color: widget.isSelected ? ColorPalette.currentColorPalette.primary : ColorPalette.currentColorPalette.primaryBackground
+          )
         ),
 
         child: IconButton(

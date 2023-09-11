@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +65,7 @@ class _WeightGraphState extends State<WeightGraph> {
 
     _minWeight = getMinWeight(_weightData);
     _maxWeight = getMaxWeight(_weightData);
-    _verticalMargins = (_maxWeight - _minWeight) / 10;
+    _verticalMargins = (_maxWeight - _minWeight) / 5;
 
     return Container(
       margin: const EdgeInsets.all(8.0),
@@ -128,7 +126,7 @@ class _WeightGraphState extends State<WeightGraph> {
             days = tempDays;
           }
         }
-        return days + 1;
+        return days;
     }
   }
 
@@ -156,7 +154,7 @@ class _WeightGraphState extends State<WeightGraph> {
 
   AxisTitles _getRightAxisTitles() {
     return const AxisTitles(
-      axisNameSize: 40,
+      axisNameSize: 15,
       axisNameWidget: Text('')
     );
   }
@@ -337,7 +335,10 @@ class _WeightGraphState extends State<WeightGraph> {
             ),
             children: [
               TextSpan(
-                text: _monthFormatter.format(curData.timestamp.toDate())
+                text: _allTimeFormatter.format(curData.timestamp.toDate()),
+                style: TextStyle(
+                  color: ColorPalette.currentColorPalette.hintText
+                )
               )
             ]
           )

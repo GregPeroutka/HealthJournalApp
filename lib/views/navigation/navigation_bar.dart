@@ -35,8 +35,7 @@ class _NavigationBarState extends State<NavigationBar> {
           child: Container(
     
             margin: EdgeInsets.only(
-              top: _marginPadding,
-              bottom: _marginPadding, 
+              top: _marginPadding, 
               right: _marginPadding, 
               left: _marginPadding
             ),

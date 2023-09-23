@@ -142,7 +142,7 @@ class _WeightPageState extends State<WeightPage> {
                         onDone: () {
                           try {
                             double curWeight = double.parse(weightTextController.text);
-                            if(todaysWeightData != null && todaysWeightData!.weight != curWeight) {
+                            if(todaysWeightData!.weight != curWeight) {
                               widget.weightPageViewModel.writeWeightData(todaysWeightData!.dateTime, curWeight).then((value) => {
                                 setState(() {
                                   Navigator.of(context).pop();

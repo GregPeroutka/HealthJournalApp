@@ -88,6 +88,7 @@ class _CalendarDialog extends State<CalendarDialog> {
                   },
                   onDaySelected: (selectedDay, focusedDay) {
                     setState(() {
+                      debugPrint(selectedDay.day.toString());
                       _selectedDay = selectedDay;
                       _focusedDay = focusedDay;
                       _selectedWeightData = widget.weightPageViewModel.getWeightData(selectedDay);
@@ -148,11 +149,7 @@ class _CalendarDialog extends State<CalendarDialog> {
                                 return WeightDialog(
                                   onDone: () {
                                     setState(() {
-                                      if(_selectedWeightData != null) {
-                                        widget.weightPageViewModel.writeWeightData(_selectedWeightData!.dateTime, double.parse(_editWeightController.text));
-                                      } else {
-                                        widget.weightPageViewModel.writeWeightData(_selectedDay, double.parse(_editWeightController.text));
-                                      }
+                                      widget.weightPageViewModel.writeWeightData(_selectedDay, double.parse(_editWeightController.text));
                                       _selectedWeightData = widget.weightPageViewModel.getWeightData(_selectedDay);
                                     });
                                     widget.onDone();

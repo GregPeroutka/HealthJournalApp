@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_health_journal/color_palette.dart';
@@ -11,7 +10,12 @@ import 'package:my_health_journal/views/pages/weight_page/weight_graph.dart';
 
 
 class WeightPage extends StatefulWidget {
-  const WeightPage({super.key});
+  final WeightPageViewModel weightPageViewModel; 
+  
+  const WeightPage({
+    super.key,
+    required this.weightPageViewModel
+  });
 
   @override
   State<StatefulWidget> createState() => _WeightPageState();
@@ -34,8 +38,8 @@ class _WeightPageState extends State<WeightPage> {
 
   @override
   Widget build(BuildContext context) {
-    historyWeightData = WeightPageViewModel.getLastNDaysWeightData(historyCount);
-    todaysWeightData = WeightPageViewModel.todaysWeightData;
+    historyWeightData = widget.weightPageViewModel.getLastNDaysWeightData(historyCount);
+    todaysWeightData = widget.weightPageViewModel.todaysWeightData;
 
     return SafeArea(
       bottom: false,
@@ -64,7 +68,10 @@ class _WeightPageState extends State<WeightPage> {
               _todaysWeightWidget(),
     
               _graphDropDownMenu(),
-              WeightGraph(timeSpan: _curGraphTimeSpan),
+              WeightGraph(
+                weightPageViewModel: widget.weightPageViewModel, 
+                timeSpan: _curGraphTimeSpan
+              ),
     
               _recentHistoryHeaderWidget(),
 
@@ -136,7 +143,7 @@ class _WeightPageState extends State<WeightPage> {
                           try {
                             double curWeight = double.parse(weightTextController.text);
                             if(todaysWeightData != null && todaysWeightData!.weight != curWeight) {
-                              WeightPageViewModel.writeWeightData(todaysWeightData!.dateTime, curWeight).then((value) => {
+                              widget.weightPageViewModel.writeWeightData(todaysWeightData!.dateTime, curWeight).then((value) => {
                                 setState(() {
                                   Navigator.of(context).pop();
                                 })
@@ -192,7 +199,7 @@ class _WeightPageState extends State<WeightPage> {
                   onDone: () {
                     try {
                       double weight = double.parse(weightTextController.text);
-                      WeightPageViewModel.writeTodaysWeightData(weight).then((value) => {
+                      widget.weightPageViewModel.writeTodaysWeightData(weight).then((value) => {
                         setState(() {
                           Navigator.of(context).pop();
                         })
@@ -338,6 +345,7 @@ class _WeightPageState extends State<WeightPage> {
       context: context, 
       builder: (context) {
         return CalendarDialog(
+          weightPageViewModel: widget.weightPageViewModel,
           onDone: () {
             setState(() {});
           },
@@ -396,7 +404,7 @@ class _WeightPageState extends State<WeightPage> {
                       double curWeight = double.parse(weightTextController.text);
                       if(data == null) {
 
-                        WeightPageViewModel.writeWeightData(DateTime.now().subtract(Duration(days: historyCount - index + 1 )), curWeight).then((value) => {
+                        widget.weightPageViewModel.writeWeightData(DateTime.now().subtract(Duration(days: historyCount - index + 1 )), curWeight).then((value) => {
                           setState(() {
                             Navigator.of(context).pop();
                           })
@@ -405,7 +413,7 @@ class _WeightPageState extends State<WeightPage> {
                       } else {
 
                         if(data.weight != curWeight) {
-                          WeightPageViewModel.writeWeightData(data.dateTime, curWeight).then((value) => {
+                          widget.weightPageViewModel.writeWeightData(data.dateTime, curWeight).then((value) => {
                             setState(() {
                               Navigator.of(context).pop();
                             }

@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:my_health_journal/models/database_model.dart';
 import 'package:my_health_journal/types/database_types.dart';
+import 'package:my_health_journal/types/navigation_types.dart';
+import 'package:my_health_journal/views/pages/weight_page/page_view_model.dart';
 
-class WeightPageViewModel {
+class WeightPageViewModel extends PageViewModel {
 
-  static List<WeightData> _currentData = List<WeightData>.empty();
-  static List<WeightData> get currentData => _currentData;
+  @override
+  PageType pageType = PageType.weight;
 
-  static WeightData? _todaysWeightData;
-  static WeightData? get todaysWeightData => _todaysWeightData;
+  List<WeightData> _currentData = List<WeightData>.empty();
+  List<WeightData> get currentData => _currentData;
 
-  static Future loadData() async {
+  WeightData? _todaysWeightData;
+  WeightData? get todaysWeightData => _todaysWeightData;
+
+  Future loadData() async {
     DateTime curTime = DateTime.now();
 
     _currentData = await DatabaseModel.getWeightData();
@@ -29,17 +34,17 @@ class WeightPageViewModel {
     }
   }
 
-  static Future writeTodaysWeightData(double weight) async {
+  Future writeTodaysWeightData(double weight) async {
     await DatabaseModel.writeWeightData(DateTime.now(), weight);
     await loadData();
   }
 
-  static Future writeWeightData(DateTime dateTime, double weight) async {
+  Future writeWeightData(DateTime dateTime, double weight) async {
     await DatabaseModel.writeWeightData(dateTime, weight);
     await loadData();
   }
 
-  static List<WeightData?> getLastNDaysWeightData(int n) {
+  List<WeightData?> getLastNDaysWeightData(int n) {
 
     DateTime curTime = DateTime.now();
     List<WeightData?> curWeightData = List<WeightData?>.empty(growable: true);
@@ -64,7 +69,7 @@ class WeightPageViewModel {
     return curWeightData;
   }
 
-  static WeightData? getWeightData(DateTime dateTime) {
+  WeightData? getWeightData(DateTime dateTime) {
 
     for(WeightData? element in _currentData) {
       if(element != null) {

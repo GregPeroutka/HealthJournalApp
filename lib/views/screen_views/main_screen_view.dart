@@ -1,19 +1,22 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide NavigationBar;
 import 'package:my_health_journal/color_palette.dart';
 import 'package:my_health_journal/types/navigation_types.dart';
 import 'package:my_health_journal/view_models/main_screen_view_model.dart';
+import 'package:my_health_journal/view_models/weight_page_view_model.dart';
 import 'package:my_health_journal/views/navigation/navigation_bar.dart';
 import 'package:my_health_journal/views/pages/loading_page.dart';
+import 'package:my_health_journal/views/pages/weight_page/page_view_model.dart';
 import 'package:my_health_journal/views/pages/weight_page/weight_page.dart';
 
 class MainScreenView extends StatefulWidget {
+  final MainScreenViewModel mainScreenViewModel;
 
-  const MainScreenView({super.key});
+  const MainScreenView({
+    super.key,
+    required this.mainScreenViewModel
+  });
 
   @override
   State<MainScreenView> createState() => _MainScreenViewState();
@@ -21,26 +24,20 @@ class MainScreenView extends StatefulWidget {
 
 class _MainScreenViewState extends State<MainScreenView> {
 
-  Widget _currentPage = LoadingPage();
-  StreamSubscription<PageType>? pageStreamSubscription;
-
-  _MainScreenViewState() {
-
-    MainScreenViewModel.loadWeight();
-    
-  }
+  Widget _currentPage = const LoadingPage();
+  StreamSubscription<PageViewModel>? pageStreamSubscription;
 
   @override
   void initState() {
 
-    pageStreamSubscription = MainScreenViewModel.pageBroadcastStream.listen((PageType pageType) {
-      debugPrint('Test: $pageType');
+    pageStreamSubscription = widget.mainScreenViewModel.pageBroadcastStream.listen((PageViewModel pageViewModel) {
+      debugPrint('Test: ${pageViewModel.pageType}');
       setState(() {
-        switch (pageType) {
+        switch (pageViewModel.pageType) {
           case PageType.loading:
-            _currentPage = LoadingPage();
+            _currentPage = const LoadingPage();
           case PageType.weight:
-            _currentPage = WeightPage();
+            _currentPage = WeightPage(weightPageViewModel: pageViewModel as WeightPageViewModel);
           case PageType.food:
           case PageType.workout:
           case PageType.settings:
@@ -48,20 +45,19 @@ class _MainScreenViewState extends State<MainScreenView> {
       });
     });
 
+    widget.mainScreenViewModel.loadWeight();
+
     super.initState();
   }
 
   @override
   void dispose() {
-
     pageStreamSubscription?.cancel();
     super.dispose();
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Material(
       color: ColorPalette.currentColorPalette.primaryBackground,
 
@@ -73,7 +69,6 @@ class _MainScreenViewState extends State<MainScreenView> {
           NavigationBar(changePage: _changePage),
           Expanded(child: _currentPage)
         ],
-
       )
     );
   }
@@ -81,11 +76,15 @@ class _MainScreenViewState extends State<MainScreenView> {
   void _changePage(NavigationBarButtonType type) {
     switch(type) {
       case NavigationBarButtonType.weight:
-        MainScreenViewModel.loadWeight();
+        widget.mainScreenViewModel.loadWeight();
       case NavigationBarButtonType.food:
-        MainScreenViewModel.pageStreamSink.add(PageType.loading);
+        setState(() {
+          _currentPage = const LoadingPage();
+        });
       case NavigationBarButtonType.workout:
-        MainScreenViewModel.pageStreamSink.add(PageType.loading);
+        setState(() {
+          _currentPage = const LoadingPage();
+        });
       case NavigationBarButtonType.settings:
         FirebaseAuth.instance.signOut();
         //MainScreenViewModel.pageStreamController.sink.add(PageType.loading);

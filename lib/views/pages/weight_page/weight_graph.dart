@@ -8,12 +8,14 @@ import 'package:my_health_journal/types/weight_types.dart';
 import 'package:my_health_journal/view_models/weight_page_view_model.dart';
 
 class WeightGraph extends StatefulWidget {
+  final GraphTimeSpan timeSpan;
+  final WeightPageViewModel weightPageViewModel;
+
   const WeightGraph({
     super.key,
+    required this.weightPageViewModel,
     required this.timeSpan
   });
-
-  final GraphTimeSpan timeSpan;
 
   @override
   State<WeightGraph> createState() => _WeightGraphState();
@@ -58,7 +60,7 @@ class _WeightGraphState extends State<WeightGraph> {
     _span = widget.timeSpan;
 
     _days = _getDays();
-    _weightData = WeightPageViewModel.getLastNDaysWeightData(_days);
+    _weightData = widget.weightPageViewModel.getLastNDaysWeightData(_days);
     _bottomAxisTitles = _getBottomAxisTitles();
     _barData = _getBarData();
     _lineTouchData = _getLineTouchData();
@@ -118,15 +120,15 @@ class _WeightGraphState extends State<WeightGraph> {
         return yearLength - 1;
       case GraphTimeSpan.allTime:
         int days = 0;
-        for(WeightData? element in WeightPageViewModel.currentData) {
+        for(WeightData? element in widget.weightPageViewModel.currentData) {
           if(element == null) continue;
 
-          int tempDays = Timestamp.now().toDate().difference(element.dateTime).inDays;
+          int tempDays = DateTime.now().difference(element.dateTime).inDays;
           if(tempDays > days) {
             days = tempDays;
           }
         }
-        return days;
+        return days + 1;
     }
   }
 
@@ -239,8 +241,8 @@ class _WeightGraphState extends State<WeightGraph> {
         spots.add(FlSpot(i.toDouble(), _weightData[i]!.weight));
       }
     }
-    if (WeightPageViewModel.todaysWeightData != null) {
-      spots.add(FlSpot(_days.toDouble(), WeightPageViewModel.todaysWeightData!.weight));
+    if (widget.weightPageViewModel.todaysWeightData != null) {
+      spots.add(FlSpot(_days.toDouble(), widget.weightPageViewModel.todaysWeightData!.weight));
     }
 
     return spots;

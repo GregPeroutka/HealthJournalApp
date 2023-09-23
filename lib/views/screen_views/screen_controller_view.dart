@@ -1,10 +1,7 @@
-// This class is the first screen that gets loaded from app startup
-// The main purpose of this screen is to handle transitions between screens
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:my_health_journal/types/navigation_types.dart';
+import 'package:my_health_journal/view_models/main_screen_view_model.dart';
 import 'package:my_health_journal/views/screen_views/signin_screen_view.dart';
 import '../../view_models/screen_controller_view_model.dart';
 import 'error_screen_view.dart';
@@ -12,11 +9,8 @@ import 'loading_screen_view.dart';
 import 'main_screen_view.dart';
 
 class ScreenControllerView extends StatefulWidget {
-  static const ScreenControllerView _instance = ScreenControllerView._internal();
-  factory ScreenControllerView() {
-    return _instance;
-  }
-  const ScreenControllerView._internal();
+  const ScreenControllerView({super.key});
+
 
   @override
   State<ScreenControllerView> createState() => _ScreenControllerViewState();
@@ -29,11 +23,11 @@ class _ScreenControllerViewState extends State<ScreenControllerView> {
   final LoadingScreenView _loadingScreenView = const LoadingScreenView();
   final ErrorScreenView _errorScreenView = const ErrorScreenView();
   final SigninScreenView _signinScreenView = const SigninScreenView();
-  final MainScreenView _mainScreenView = const MainScreenView();
+  final MainScreenView _mainScreenView = MainScreenView(mainScreenViewModel: MainScreenViewModel());
 
   StreamSubscription<ScreenType>? screenStreamSubscription;
 
-  Map<ScreenType, Widget?> _screenViews = {};
+  Map<ScreenType, Widget> _screenViews = {};
 
   @override
   void initState() {
@@ -61,10 +55,8 @@ class _ScreenControllerViewState extends State<ScreenControllerView> {
 
   @override
   void dispose() {
-
     screenStreamSubscription?.cancel();
     super.dispose();
-
   }
 
   @override

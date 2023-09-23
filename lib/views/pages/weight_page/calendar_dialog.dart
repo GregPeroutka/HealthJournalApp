@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_health_journal/color_palette.dart';
 import 'package:my_health_journal/types/database_types.dart';
@@ -8,8 +7,11 @@ import 'package:table_calendar/table_calendar.dart';
 
 class CalendarDialog extends StatefulWidget{
   final Function onDone;
+  final WeightPageViewModel weightPageViewModel;
+  
   const CalendarDialog({
     super.key,
+    required this.weightPageViewModel,
     required this.onDone
   });
 
@@ -34,7 +36,7 @@ class _CalendarDialog extends State<CalendarDialog> {
 
   @override
   Widget build(BuildContext context) {
-    _selectedWeightData = WeightPageViewModel.getWeightData(_selectedDay);
+    _selectedWeightData = widget.weightPageViewModel.getWeightData(_selectedDay);
 
     return SafeArea(
       child: Align(
@@ -88,13 +90,13 @@ class _CalendarDialog extends State<CalendarDialog> {
                     setState(() {
                       _selectedDay = selectedDay;
                       _focusedDay = focusedDay;
-                      _selectedWeightData = WeightPageViewModel.getWeightData(selectedDay);
+                      _selectedWeightData = widget.weightPageViewModel.getWeightData(selectedDay);
                     });
                   },
         
                   calendarBuilders: CalendarBuilders(
                     markerBuilder: (context, day, focusedDay) {
-                      if(WeightPageViewModel.getWeightData(day) != null) {
+                      if(widget.weightPageViewModel.getWeightData(day) != null) {
                         return Icon(
                           Icons.circle,
                           color: ColorPalette.currentColorPalette.hintText,
@@ -147,11 +149,11 @@ class _CalendarDialog extends State<CalendarDialog> {
                                   onDone: () {
                                     setState(() {
                                       if(_selectedWeightData != null) {
-                                        WeightPageViewModel.writeWeightData(_selectedWeightData!.dateTime, double.parse(_editWeightController.text));
+                                        widget.weightPageViewModel.writeWeightData(_selectedWeightData!.dateTime, double.parse(_editWeightController.text));
                                       } else {
-                                        WeightPageViewModel.writeWeightData(_selectedDay, double.parse(_editWeightController.text));
+                                        widget.weightPageViewModel.writeWeightData(_selectedDay, double.parse(_editWeightController.text));
                                       }
-                                      _selectedWeightData = WeightPageViewModel.getWeightData(_selectedDay);
+                                      _selectedWeightData = widget.weightPageViewModel.getWeightData(_selectedDay);
                                     });
                                     widget.onDone();
                                     Navigator.of(context).pop();

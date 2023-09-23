@@ -1,21 +1,25 @@
 import 'dart:async';
-import 'package:my_health_journal/types/navigation_types.dart';
+import 'package:my_health_journal/view_models/loading_page_view_model.dart';
 import 'package:my_health_journal/view_models/weight_page_view_model.dart';
+import 'package:my_health_journal/views/pages/weight_page/page_view_model.dart';
 
 class MainScreenViewModel {
 
-  static final StreamController<PageType> _pageStreamController = StreamController<PageType>();
-  static final Stream<PageType> _pageBroadcastStream = _pageStreamController.stream.asBroadcastStream();
-  static final StreamSink<PageType> _pageStreamSink = _pageStreamController.sink;
+  final StreamController<PageViewModel> _pageStreamController = StreamController<PageViewModel>();
+  late final Stream<PageViewModel> _pageBroadcastStream = _pageStreamController.stream.asBroadcastStream();
+  late final StreamSink<PageViewModel> _pageStreamSink = _pageStreamController.sink;
 
-  static Stream<PageType> get pageBroadcastStream => _pageBroadcastStream;
-  static StreamSink<PageType> get pageStreamSink => _pageStreamSink;
+  Stream<PageViewModel> get pageBroadcastStream => _pageBroadcastStream;
+  StreamSink<PageViewModel> get pageStreamSink => _pageStreamSink;
 
-  static void loadWeight() {
-    _pageStreamSink.add(PageType.loading);
+  final LoadingPageViewModel _loadingPageViewModel = LoadingPageViewModel();
+  final WeightPageViewModel _weightPageViewModel = WeightPageViewModel();
 
-    WeightPageViewModel.loadData().then((value) => {
-      _pageStreamSink.add(PageType.weight)
+  void loadWeight() {
+    _pageStreamSink.add(_loadingPageViewModel);
+
+    _weightPageViewModel.loadData().then((value) => {
+      _pageStreamSink.add(_weightPageViewModel)
     });
   }
 

@@ -121,7 +121,7 @@ class _WeightGraphState extends State<WeightGraph> {
         for(WeightData? element in WeightPageViewModel.currentData) {
           if(element == null) continue;
 
-          int tempDays = Timestamp.now().toDate().difference(element.timestamp.toDate()).inDays;
+          int tempDays = Timestamp.now().toDate().difference(element.dateTime).inDays;
           if(tempDays > days) {
             days = tempDays;
           }
@@ -335,7 +335,7 @@ class _WeightGraphState extends State<WeightGraph> {
             ),
             children: [
               TextSpan(
-                text: _allTimeFormatter.format(curData.timestamp.toDate()),
+                text: _allTimeFormatter.format(curData.dateTime),
                 style: TextStyle(
                   color: ColorPalette.currentColorPalette.hintText
                 )

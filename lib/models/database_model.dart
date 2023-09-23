@@ -6,12 +6,11 @@ class DatabaseModel {
 
   static final _weightDataCollectionReference = FirebaseFirestore.instance.collection('user_data/weight_data/${FirebaseAuth.instance.currentUser!.uid}');
 
-  static Future<void> writeWeightData(WeightData weightData) async {
-    
-    return _weightDataCollectionReference.doc(weightData.id).set({
-      'Weight': weightData.weight,
-      'Note': weightData.note,
-      'TimeStamp': weightData.timestamp
+  static Future<void> writeWeightData(DateTime dateTime, double weight) async {
+
+    return _weightDataCollectionReference.doc(dateTime.toString()).set({
+      'Weight': weight,
+      'TimeStamp': DateTime.timestamp()
     });
 
   }
@@ -23,8 +22,7 @@ class DatabaseModel {
     for (var element in weights.docs) {
       weightDataList.add(
         WeightData(
-          note: element.data()['Note'],
-          timestamp: element.data()['TimeStamp'],
+          dateTime: (element.data()['TimeStamp'] as Timestamp).toDate(),
           weight: element.data()['Weight'],
           id: element.id
         )

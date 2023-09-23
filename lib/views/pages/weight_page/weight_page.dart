@@ -5,8 +5,10 @@ import 'package:my_health_journal/color_palette.dart';
 import 'package:my_health_journal/types/database_types.dart';
 import 'package:my_health_journal/types/weight_types.dart';
 import 'package:my_health_journal/view_models/weight_page_view_model.dart';
+import 'package:my_health_journal/views/pages/weight_page/calendar_dialog.dart';
 import 'package:my_health_journal/views/pages/weight_page/weight_dialog.dart';
 import 'package:my_health_journal/views/pages/weight_page/weight_graph.dart';
+
 
 class WeightPage extends StatefulWidget {
   const WeightPage({super.key});
@@ -134,7 +136,7 @@ class _WeightPageState extends State<WeightPage> {
                           try {
                             double curWeight = double.parse(weightTextController.text);
                             if(todaysWeightData != null && todaysWeightData!.weight != curWeight) {
-                              WeightPageViewModel.overwriteWeightData(todaysWeightData!, curWeight).then((value) => {
+                              WeightPageViewModel.writeWeightData(todaysWeightData!.dateTime, curWeight).then((value) => {
                                 setState(() {
                                   Navigator.of(context).pop();
                                 })
@@ -322,12 +324,25 @@ class _WeightPageState extends State<WeightPage> {
                 iconSize: 30,
                 color: ColorPalette.currentColorPalette.hintText,
                 icon: const Icon(Icons.calendar_month),
-                onPressed: () {},
+                onPressed: _openCalendarDialog,
               ),
             ),
           )
         )
       ]
+    );
+  }
+
+  void _openCalendarDialog() {
+    showDialog(
+      context: context, 
+      builder: (context) {
+        return CalendarDialog(
+          onDone: () {
+            setState(() {});
+          },
+        );
+      }
     );
   }
 
@@ -379,20 +394,18 @@ class _WeightPageState extends State<WeightPage> {
                   onDone: () {
                     try {
                       double curWeight = double.parse(weightTextController.text);
-
                       if(data == null) {
 
-                        // Writes WeightData for today minus 'index + 1' amount of days
-                        WeightPageViewModel.writeWeightData(Timestamp.fromDate(Timestamp.now().toDate().subtract(Duration(days: index + 1))), curWeight).then((value) => {
+                        WeightPageViewModel.writeWeightData(DateTime.now().subtract(Duration(days: historyCount - index + 1 )), curWeight).then((value) => {
                           setState(() {
                             Navigator.of(context).pop();
                           })
                         });
-                        
+                      
                       } else {
 
                         if(data.weight != curWeight) {
-                          WeightPageViewModel.overwriteWeightData(data, curWeight).then((value) => {
+                          WeightPageViewModel.writeWeightData(data.dateTime, curWeight).then((value) => {
                             setState(() {
                               Navigator.of(context).pop();
                             }
@@ -402,7 +415,6 @@ class _WeightPageState extends State<WeightPage> {
                         }
 
                       }
-                      
                     } on FormatException catch (e) {
                       debugPrint(e.toString());
                     }
@@ -442,7 +454,7 @@ class _WeightPageState extends State<WeightPage> {
                       Text(
                         index == historyCount
                           ? 'Yesterday'
-                          : '${historyCount - index} days ago',
+                          : '${historyCount - index + 1} days ago',
                         style: TextStyle(
                           color: ColorPalette.currentColorPalette.hintText,
                           fontSize: 18,
@@ -452,7 +464,7 @@ class _WeightPageState extends State<WeightPage> {
                       Text(
                         data == null
                           ? '---'
-                          : DateFormat('EEEE, MMMM d').format(data.timestamp.toDate()),
+                          : DateFormat('EEEE, MMMM d').format(data.dateTime),
                         style: TextStyle(
                           color: ColorPalette.currentColorPalette.hintText,
                           fontSize: 14,
@@ -465,7 +477,7 @@ class _WeightPageState extends State<WeightPage> {
           
                 const Spacer(),
                 
-                const Text('TEst')
+                Text('$index')
               ],
             ),
           ),

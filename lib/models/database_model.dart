@@ -6,6 +6,8 @@ import "package:my_health_journal/types/database_types.dart";
 class DatabaseModel {
 
   static final _weightDataCollectionReference = FirebaseFirestore.instance.collection('user_data/weight_data/${FirebaseAuth.instance.currentUser!.uid}');
+  static final DateFormat dateToIdFormatter = DateFormat('yyyy-MM-dd');
+
 
   static Future<void> writeWeightData(DateTime dateTime, double weight) async {
 
@@ -32,8 +34,7 @@ class DatabaseModel {
   }
 
   static String _getId(DateTime dateTime) {
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
-    return formatter.format(dateTime);
+    return dateToIdFormatter.format(dateTime);
   }
 
   static DateTime _getDateTime(String id) {

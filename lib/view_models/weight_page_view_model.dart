@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:my_health_journal/models/database_model.dart';
 import 'package:my_health_journal/types/database_types.dart';
@@ -14,6 +15,12 @@ class WeightPageViewModel extends PageViewModel {
 
   WeightData? _todaysWeightData;
   WeightData? get todaysWeightData => _todaysWeightData;
+
+  final StreamController _onDataUpdatedStreamController = StreamController();
+  late final Stream _onDataUpdatedStream = _onDataUpdatedStreamController.stream.asBroadcastStream();
+  late final StreamSink _onDataUpdatedSink = _onDataUpdatedStreamController.sink;
+
+  Stream get onDataUpdatedBroadcastStream => _onDataUpdatedStream;
 
   Future loadData() async {
     DateTime curTime = DateTime.now();
@@ -32,6 +39,8 @@ class WeightPageViewModel extends PageViewModel {
       _todaysWeightData = null;
       debugPrint(e.toString());
     }
+    
+    _onDataUpdatedSink.add(true);
   }
 
   Future writeTodaysWeightData(double weight) async {

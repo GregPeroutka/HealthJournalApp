@@ -1,11 +1,9 @@
-// Handles main initialization of the app - Connecting to DB, connecting to Account, etc
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:my_health_journal/types/navigation_types.dart';
 import '../firebase_options.dart';
-
 
 class ScreenControllerViewModel {
 

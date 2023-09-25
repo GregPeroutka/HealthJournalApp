@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -7,13 +8,11 @@ import 'package:my_health_journal/types/weight_types.dart';
 import 'package:my_health_journal/view_models/weight_page_view_model.dart';
 
 class WeightGraph extends StatefulWidget {
-  final GraphTimeSpan timeSpan;
   final WeightPageViewModel weightPageViewModel;
 
   const WeightGraph({
     super.key,
-    required this.weightPageViewModel,
-    required this.timeSpan
+    required this.weightPageViewModel
   });
 
   @override
@@ -21,6 +20,8 @@ class WeightGraph extends StatefulWidget {
 }
 
 class _WeightGraphState extends State<WeightGraph> {
+  late final StreamSubscription _onDataUpdatedSubscription;
+  
   final double _borderRadius = 20;
 
   static const int weekLength = 7;
@@ -40,8 +41,6 @@ class _WeightGraphState extends State<WeightGraph> {
   final DateFormat _yearFormatter = DateFormat("MMM, ''yy");
   final DateFormat _allTimeFormatter = DateFormat("MMM dd, ''yy");
 
-  GraphTimeSpan _span = GraphTimeSpan.week;
-
   int _days = 0;
   List<WeightData?> _weightData = List.empty();
 
@@ -52,11 +51,23 @@ class _WeightGraphState extends State<WeightGraph> {
   double _minWeight = defaultMinWeight;
   double _maxWeight = defaultMaxWeight;
   double _verticalMargins = 0;
+  
+  GraphTimeSpan _graphTimeSpan = GraphTimeSpan.week;
+
+  @override
+  void initState() {
+    _onDataUpdatedSubscription = widget.weightPageViewModel.onDataUpdatedBroadcastStream.listen((event) => setState(() {}));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _onDataUpdatedSubscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    _span = widget.timeSpan;
 
     _days = _getDays();
     _weightData = widget.weightPageViewModel.getLastNDaysWeightData(_days);
@@ -68,6 +79,79 @@ class _WeightGraphState extends State<WeightGraph> {
     _maxWeight = getMaxWeight(_weightData);
     _verticalMargins = (_maxWeight - _minWeight) / 5;
 
+    return Column(
+      children: [
+        _dropDown(),
+        _lineChart(),
+      ],
+    );
+  }
+
+  Align _dropDown() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        height: 36,
+        decoration: BoxDecoration(
+          color: ColorPalette.currentColorPalette.primaryBackground,
+          borderRadius: BorderRadius.circular(1000)
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16, right: 8),
+          child: DropdownButton<GraphTimeSpan>(
+
+            value: _graphTimeSpan,
+            items: const [
+
+              DropdownMenuItem(
+                value: GraphTimeSpan.week, 
+                child: Text('Last Week')
+              ),
+              DropdownMenuItem(
+                value: GraphTimeSpan.month, 
+                child: Text('Last Month')
+              ),
+              DropdownMenuItem(
+                value: GraphTimeSpan.sixMonths, 
+                child: Text('Last 6 Months')
+              ),
+              DropdownMenuItem(
+                value: GraphTimeSpan.year, 
+                child: Text('Last year')
+              ),
+              DropdownMenuItem(
+                value: GraphTimeSpan.allTime,
+                child: Text('All Time')
+              ),
+
+            ],
+        
+            style: TextStyle(
+              color: ColorPalette.currentColorPalette.text,
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              fontFamily: "Rubik",
+            ),
+            dropdownColor: ColorPalette.currentColorPalette.secondaryBackground,
+            borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
+            underline: const SizedBox(),
+            isExpanded: false,
+            alignment: Alignment.center,
+            iconEnabledColor: ColorPalette.currentColorPalette.hintText,
+        
+            onChanged: (value) {
+              setState(() {
+                _graphTimeSpan = value ?? GraphTimeSpan.week;
+              });
+            }
+
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container _lineChart() {
     return Container(
       margin: const EdgeInsets.all(8.0),
       padding: const EdgeInsets.fromLTRB(12, 24, 12, 12),
@@ -108,7 +192,7 @@ class _WeightGraphState extends State<WeightGraph> {
   }
 
   int _getDays() {
-    switch (_span) {
+    switch (_graphTimeSpan) {
       case GraphTimeSpan.week:
         return weekLength - 1;
       case GraphTimeSpan.month:
@@ -162,7 +246,7 @@ class _WeightGraphState extends State<WeightGraph> {
 
   AxisTitles _getBottomAxisTitles() {
     double interval = 1;
-    switch (_span) {
+    switch (_graphTimeSpan) {
       
       case GraphTimeSpan.week:
         interval = 1;
@@ -188,7 +272,7 @@ class _WeightGraphState extends State<WeightGraph> {
             return bottomLabel('Today');
           }
 
-          switch (_span) {
+          switch (_graphTimeSpan) {
             case GraphTimeSpan.week:
               int temp = (value.toInt() + DateTime.now().weekday) % 7 + 1;
               return bottomLabel(getWeekDayAbreviation(temp));

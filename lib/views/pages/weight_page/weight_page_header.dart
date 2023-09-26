@@ -1,9 +1,9 @@
 import 'dart:async';
-
-import 'package:my_health_journal/color_palette.dart';
+import 'package:my_health_journal/app_style.dart';
 import 'package:my_health_journal/view_models/weight_page_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:my_health_journal/views/pages/weight_page/weight_dialog.dart';
+
 class WeightPageHeader extends StatefulWidget {
 
   final WeightPageViewModel weightPageViewModel;
@@ -50,7 +50,7 @@ class _WeightPageHeaderState extends State<WeightPageHeader> {
       child: Text(
         'Today',
         style: TextStyle(
-          color: ColorPalette.currentColorPalette.hintText,
+          color: AppStyle.currentStyle.textColor2,
           fontSize: 15,
           fontWeight: FontWeight.bold,
           fontFamily: "Rubik",
@@ -71,8 +71,8 @@ class _WeightPageHeaderState extends State<WeightPageHeader> {
     return Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        color: ColorPalette.currentColorPalette.primary,
-        borderRadius: BorderRadius.circular(1000)
+        color: AppStyle.currentStyle.highlightColor1,
+        borderRadius: BorderRadius.circular(AppStyle.currentStyle.completelyRoundRadius)
       ),
       child: TextButton(
         onPressed: () => {
@@ -104,7 +104,7 @@ class _WeightPageHeaderState extends State<WeightPageHeader> {
           child: Text(
             'Add Weight',
             style: TextStyle(
-              color: ColorPalette.currentColorPalette.text,
+              color: AppStyle.currentStyle.textColor1,
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
@@ -126,7 +126,7 @@ class _WeightPageHeaderState extends State<WeightPageHeader> {
         Text(
           '$todaysWeight lbs',
           style: TextStyle(
-            color: ColorPalette.currentColorPalette.text,
+            color: AppStyle.currentStyle.textColor1,
             fontSize: 50,
             fontWeight: FontWeight.bold,
             fontFamily: "Rubik",
@@ -170,7 +170,7 @@ class _WeightPageHeaderState extends State<WeightPageHeader> {
               icon: Icon(
                 Icons.edit,
                 size: 24,
-                color: ColorPalette.currentColorPalette.hintText
+                color: AppStyle.currentStyle.textColor2
               )
             ),
           ),

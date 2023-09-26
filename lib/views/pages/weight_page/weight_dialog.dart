@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:my_health_journal/color_palette.dart';
+import 'package:my_health_journal/app_style.dart';
 
 class WeightDialog extends StatefulWidget{
   final Function onDone;
@@ -14,8 +14,6 @@ class WeightDialog extends StatefulWidget{
 }
 
 class _WeightDialog extends State<WeightDialog> {
-
-  final double _borderRadius = 20;
   
   @override
   Widget build(BuildContext context) {
@@ -25,7 +23,7 @@ class _WeightDialog extends State<WeightDialog> {
       child: Container(
         margin: const EdgeInsets.only(top: 50),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(_borderRadius))
+          borderRadius: BorderRadius.all(Radius.circular(AppStyle.currentStyle.squareBorderRadius))
         ),
         clipBehavior: Clip.hardEdge,
         
@@ -33,7 +31,7 @@ class _WeightDialog extends State<WeightDialog> {
           child: IntrinsicWidth(
 
             child: Material(
-              color: ColorPalette.currentColorPalette.primaryBackground,
+              color: AppStyle.currentStyle.backgroundColor1,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
 
@@ -49,10 +47,14 @@ class _WeightDialog extends State<WeightDialog> {
                         width: 240,
           
                         decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(1000)),
-                          color: ColorPalette.currentColorPalette.secondaryBackground,
-                          boxShadow: [
-                            ColorPalette.currentColorPalette.primaryShadow
+                          borderRadius: BorderRadius.all(Radius.circular(AppStyle.currentStyle.completelyRoundRadius)),
+                          color: AppStyle.currentStyle.backgroundColor2,
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color.fromARGB(0, 37, 37, 37),
+                              blurRadius: 1.5,
+                              spreadRadius: 2.5,
+                            )
                           ]
                         ),
           
@@ -64,7 +66,7 @@ class _WeightDialog extends State<WeightDialog> {
                                                               
                             style: TextStyle(
                               fontSize: 16,
-                              color: ColorPalette.currentColorPalette.text
+                              color: AppStyle.currentStyle.textColor1
                             ),
                             
                             autofocus: true,
@@ -77,7 +79,7 @@ class _WeightDialog extends State<WeightDialog> {
                               hintText: 'Weight',
                               border: InputBorder.none,
                               hintStyle: TextStyle(
-                                color: ColorPalette.currentColorPalette.hintText
+                                color: AppStyle.currentStyle.textColor2
                               ),
                             ),
                                                     
@@ -96,8 +98,8 @@ class _WeightDialog extends State<WeightDialog> {
                     ),
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
-                      color: ColorPalette.currentColorPalette.primary,
-                      borderRadius: BorderRadius.circular(1000)
+                      color: AppStyle.currentStyle.highlightColor1,
+                      borderRadius: BorderRadius.circular(AppStyle.currentStyle.completelyRoundRadius)
                     ),
                     child: TextButton(
                       onPressed: () {
@@ -108,7 +110,7 @@ class _WeightDialog extends State<WeightDialog> {
                         child: Text(
                           'Done',
                           style: TextStyle(
-                            color: ColorPalette.currentColorPalette.text,
+                            color: AppStyle.currentStyle.textColor1,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),

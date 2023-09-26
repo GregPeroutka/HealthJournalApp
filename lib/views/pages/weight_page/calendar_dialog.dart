@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_health_journal/color_palette.dart';
+import 'package:my_health_journal/app_style.dart';
 import 'package:my_health_journal/types/database_types.dart';
 import 'package:my_health_journal/view_models/weight_page_view_model.dart';
 import 'package:my_health_journal/views/pages/weight_page/weight_dialog.dart';
@@ -20,17 +20,15 @@ class CalendarDialog extends StatefulWidget{
 }
 
 class _CalendarDialog extends State<CalendarDialog> {
-  final double _borderRadius = 20;
-
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
 
   WeightData? _selectedWeightData;
 
-  final TextStyle _titleTextStyle = TextStyle(color: ColorPalette.currentColorPalette.text);
-  final TextStyle _weekdayTextStyle = TextStyle(color: ColorPalette.currentColorPalette.hintText);
-  final TextStyle _selectableDayTextStyle = TextStyle(fontSize: 18, color: ColorPalette.currentColorPalette.text);
-  final TextStyle _unselectableDayTextStyle = TextStyle(fontSize: 12, color: ColorPalette.currentColorPalette.disabledText);
+  final TextStyle _titleTextStyle = TextStyle(color: AppStyle.currentStyle.textColor1);
+  final TextStyle _weekdayTextStyle = TextStyle(color: AppStyle.currentStyle.textColor2);
+  final TextStyle _selectableDayTextStyle = TextStyle(fontSize: 18, color: AppStyle.currentStyle.textColor1);
+  final TextStyle _unselectableDayTextStyle = TextStyle(fontSize: 12, color: AppStyle.currentStyle.textColor3);
 
   final TextEditingController _editWeightController = TextEditingController();
 
@@ -47,8 +45,8 @@ class _CalendarDialog extends State<CalendarDialog> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: ColorPalette.currentColorPalette.primaryBackground,
-                  borderRadius: BorderRadius.circular(_borderRadius)
+                  color: AppStyle.currentStyle.backgroundColor1,
+                  borderRadius: BorderRadius.circular(AppStyle.currentStyle.squareBorderRadius)
                 ),
         
                 child: TableCalendar(
@@ -62,10 +60,10 @@ class _CalendarDialog extends State<CalendarDialog> {
                     titleTextStyle: _titleTextStyle,
                     leftChevronIcon: Icon(
                       Icons.chevron_left,
-                      color: ColorPalette.currentColorPalette.primary),
+                      color: AppStyle.currentStyle.highlightColor1),
                     rightChevronIcon: Icon(
                       Icons.chevron_right,
-                      color: ColorPalette.currentColorPalette.primary)
+                      color: AppStyle.currentStyle.highlightColor1)
                     ),
                   daysOfWeekStyle: DaysOfWeekStyle(
                     weekdayStyle: _weekdayTextStyle,
@@ -75,7 +73,7 @@ class _CalendarDialog extends State<CalendarDialog> {
                     isTodayHighlighted: false,
                     outsideDaysVisible: false,
                     selectedDecoration: BoxDecoration(
-                      color: ColorPalette.currentColorPalette.primary,
+                      color: AppStyle.currentStyle.highlightColor1,
                       shape: BoxShape.circle
                     ),
                     defaultTextStyle: _selectableDayTextStyle,
@@ -100,7 +98,7 @@ class _CalendarDialog extends State<CalendarDialog> {
                       if(widget.weightPageViewModel.getWeightData(day) != null) {
                         return Icon(
                           Icons.circle,
-                          color: ColorPalette.currentColorPalette.hintText,
+                          color: AppStyle.currentStyle.textColor2,
                           size: 10,
                         );
                       }
@@ -115,8 +113,8 @@ class _CalendarDialog extends State<CalendarDialog> {
                 clipBehavior: Clip.hardEdge,
                 margin: const EdgeInsets.only(top: 10),
                 decoration: BoxDecoration(
-                  color: ColorPalette.currentColorPalette.primaryBackground,
-                  borderRadius: BorderRadius.circular(1000)
+                  color: AppStyle.currentStyle.backgroundColor1,
+                  borderRadius: BorderRadius.circular(AppStyle.currentStyle.completelyRoundRadius)
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -128,7 +126,7 @@ class _CalendarDialog extends State<CalendarDialog> {
                           ? '${_selectedWeightData!.weight.toString()} lbs'
                           : '---',
                         style: TextStyle(
-                          color: ColorPalette.currentColorPalette.text,
+                          color: AppStyle.currentStyle.textColor1,
                           fontSize: 24,
                           fontWeight: FontWeight.bold
                         ),
@@ -162,7 +160,7 @@ class _CalendarDialog extends State<CalendarDialog> {
                           },
                           icon: Icon(
                             Icons.edit,
-                            color: ColorPalette.currentColorPalette.hintText,
+                            color: AppStyle.currentStyle.textColor2,
                           ),
                         ),
                       ),

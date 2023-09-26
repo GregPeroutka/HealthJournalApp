@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_health_journal/color_palette.dart';
+import 'package:my_health_journal/app_style.dart';
 import 'package:my_health_journal/views/navigation/navigation_bar_button.dart';
 import 'package:my_health_journal/types/navigation_types.dart';
 
@@ -21,7 +21,6 @@ class NavigationBar extends StatefulWidget {
 class _NavigationBarState extends State<NavigationBar> {
 
   final double _marginPadding = 15;
-  final double _borderRadius = 1000;
 
   int selectedButtonIndex = 0;
   
@@ -30,7 +29,7 @@ class _NavigationBarState extends State<NavigationBar> {
     return SafeArea(
       top: false,
       child: Material(
-        color: ColorPalette.currentColorPalette.primaryBackground,
+        color: AppStyle.currentStyle.backgroundColor1,
         child: FittedBox(
           child: Container(
     
@@ -41,8 +40,8 @@ class _NavigationBarState extends State<NavigationBar> {
             ),
     
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
-              color: ColorPalette.currentColorPalette.secondaryBackground,
+              borderRadius: BorderRadius.all(Radius.circular(AppStyle.currentStyle.completelyRoundRadius)),
+              color: AppStyle.currentStyle.backgroundColor2,
               boxShadow: const [
                 BoxShadow(
                   color: Color.fromARGB(100, 0, 0, 0),

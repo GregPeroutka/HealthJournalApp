@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_health_journal/color_palette.dart';
+import 'package:my_health_journal/app_style.dart';
 import 'package:my_health_journal/types/database_types.dart';
 import 'package:my_health_journal/view_models/weight_page_view_model.dart';
 import 'package:my_health_journal/views/pages/weight_page/calendar_dialog.dart';
@@ -23,7 +23,6 @@ class WeightPage extends StatefulWidget {
 class _WeightPageState extends State<WeightPage> {
 
   final double _containerPadding = 10;
-  final double _borderRadius = 20;
 
   final int historyCount = 7;
 
@@ -49,8 +48,8 @@ class _WeightPageState extends State<WeightPage> {
         
         child: Container(
           decoration: BoxDecoration(
-            color: ColorPalette.currentColorPalette.secondaryBackground,
-            borderRadius: BorderRadius.circular(_borderRadius),
+            color: AppStyle.currentStyle.backgroundColor2,
+            borderRadius: BorderRadius.circular(AppStyle.currentStyle.squareBorderRadius),
           ),
           
           child: Column(
@@ -98,7 +97,7 @@ class _WeightPageState extends State<WeightPage> {
             child: Text(
               'Last $historyCount Days',
               style: TextStyle(
-                color: ColorPalette.currentColorPalette.hintText,
+                color: AppStyle.currentStyle.textColor2,
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
@@ -111,12 +110,12 @@ class _WeightPageState extends State<WeightPage> {
             padding: const EdgeInsets.only(right: 8),
             child: Container(
               decoration: BoxDecoration(
-                color: ColorPalette.currentColorPalette.primaryBackground,
+                color: AppStyle.currentStyle.backgroundColor1,
                 shape: BoxShape.circle
               ),
               child: IconButton(
                 iconSize: 30,
-                color: ColorPalette.currentColorPalette.hintText,
+                color: AppStyle.currentStyle.textColor2,
                 icon: const Icon(Icons.calendar_month),
                 onPressed: _openCalendarDialog,
               ),

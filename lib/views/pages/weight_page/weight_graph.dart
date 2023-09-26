@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:my_health_journal/color_palette.dart';
+import 'package:my_health_journal/app_style.dart';
 import 'package:my_health_journal/types/database_types.dart';
 import 'package:my_health_journal/types/weight_types.dart';
 import 'package:my_health_journal/view_models/weight_page_view_model.dart';
@@ -22,8 +22,6 @@ class WeightGraph extends StatefulWidget {
 class _WeightGraphState extends State<WeightGraph> {
   late final StreamSubscription _onDataUpdatedSubscription;
   
-  final double _borderRadius = 20;
-
   static const int weekLength = 7;
   static const int monthLength = 31;
   static const int sixMonthsLength = 6 * 31;
@@ -93,8 +91,8 @@ class _WeightGraphState extends State<WeightGraph> {
       child: Container(
         height: 36,
         decoration: BoxDecoration(
-          color: ColorPalette.currentColorPalette.primaryBackground,
-          borderRadius: BorderRadius.circular(1000)
+          color: AppStyle.currentStyle.backgroundColor1,
+          borderRadius: BorderRadius.circular(AppStyle.currentStyle.completelyRoundRadius)
         ),
         child: Padding(
           padding: const EdgeInsets.only(left: 16, right: 8),
@@ -127,17 +125,17 @@ class _WeightGraphState extends State<WeightGraph> {
             ],
         
             style: TextStyle(
-              color: ColorPalette.currentColorPalette.text,
+              color: AppStyle.currentStyle.textColor1,
               fontSize: 12,
               fontWeight: FontWeight.bold,
               fontFamily: "Rubik",
             ),
-            dropdownColor: ColorPalette.currentColorPalette.secondaryBackground,
-            borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
+            dropdownColor: AppStyle.currentStyle.backgroundColor2,
+            borderRadius: BorderRadius.all(Radius.circular(AppStyle.currentStyle.squareBorderRadius)),
             underline: const SizedBox(),
             isExpanded: false,
             alignment: Alignment.center,
-            iconEnabledColor: ColorPalette.currentColorPalette.hintText,
+            iconEnabledColor: AppStyle.currentStyle.textColor2,
         
             onChanged: (value) {
               setState(() {
@@ -156,8 +154,8 @@ class _WeightGraphState extends State<WeightGraph> {
       margin: const EdgeInsets.all(8.0),
       padding: const EdgeInsets.fromLTRB(12, 24, 12, 12),
       decoration: BoxDecoration(
-        color: ColorPalette.currentColorPalette.primaryBackground,
-        borderRadius: BorderRadius.circular(_borderRadius),
+        color: AppStyle.currentStyle.backgroundColor1,
+        borderRadius: BorderRadius.circular(AppStyle.currentStyle.squareBorderRadius),
       ),
       constraints: const BoxConstraints(maxHeight: 250),
 
@@ -228,7 +226,7 @@ class _WeightGraphState extends State<WeightGraph> {
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
-                color: ColorPalette.currentColorPalette.hintText,
+                color: AppStyle.currentStyle.textColor2,
               )
             )
           );
@@ -302,15 +300,15 @@ class _WeightGraphState extends State<WeightGraph> {
           show: true,
           gradient: LinearGradient(
             colors: [
-              ColorPalette.currentColorPalette.primary.withOpacity(0.1),
-              ColorPalette.currentColorPalette.secondary.withOpacity(0.2)
+              AppStyle.currentStyle.highlightColor1.withOpacity(0.1),
+              AppStyle.currentStyle.highlightColor2.withOpacity(0.2)
             ]
           )
         ),
         isStrokeCapRound: true,
         barWidth: barWidth,
         dotData: const FlDotData(show: false),
-        color: ColorPalette.currentColorPalette.primary,
+        color: AppStyle.currentStyle.highlightColor1,
         isCurved: true,
         spots: _getFlSpots())
     ];
@@ -339,7 +337,7 @@ class _WeightGraphState extends State<WeightGraph> {
         style: TextStyle(
           fontSize: 10,
           fontWeight: FontWeight.bold,
-          color: ColorPalette.currentColorPalette.hintText,
+          color: AppStyle.currentStyle.textColor2,
         )
       ),
     );
@@ -397,9 +395,9 @@ class _WeightGraphState extends State<WeightGraph> {
   LineTouchData _getLineTouchData() {
     return LineTouchData(
       touchTooltipData: LineTouchTooltipData(
-        tooltipBgColor: ColorPalette.currentColorPalette.secondaryBackground,
+        tooltipBgColor: AppStyle.currentStyle.backgroundColor2,
         tooltipBorder: BorderSide(
-          color: ColorPalette.currentColorPalette.primaryBackground,
+          color: AppStyle.currentStyle.backgroundColor1,
         ),
         getTooltipItems: _getTooltipItems
       )
@@ -416,13 +414,13 @@ class _WeightGraphState extends State<WeightGraph> {
           LineTooltipItem(
             '${curData.weight.toString()} lbs\n',
             TextStyle(
-              color: ColorPalette.currentColorPalette.text
+              color: AppStyle.currentStyle.textColor1
             ),
             children: [
               TextSpan(
                 text: _allTimeFormatter.format(curData.dateTime),
                 style: TextStyle(
-                  color: ColorPalette.currentColorPalette.hintText
+                  color: AppStyle.currentStyle.textColor2
                 )
               )
             ]

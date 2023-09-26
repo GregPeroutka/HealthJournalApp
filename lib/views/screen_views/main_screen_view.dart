@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide NavigationBar;
-import 'package:my_health_journal/color_palette.dart';
+import 'package:my_health_journal/app_style.dart';
 import 'package:my_health_journal/types/navigation_types.dart';
 import 'package:my_health_journal/view_models/main_screen_view_model.dart';
 import 'package:my_health_journal/view_models/weight_page_view_model.dart';
 import 'package:my_health_journal/views/navigation/navigation_bar.dart';
 import 'package:my_health_journal/views/pages/loading_page.dart';
-import 'package:my_health_journal/views/pages/weight_page/page_view_model.dart';
+import 'package:my_health_journal/view_models/page_view_model.dart';
 import 'package:my_health_journal/views/pages/weight_page/weight_page.dart';
 
 class MainScreenView extends StatefulWidget {
@@ -59,7 +59,7 @@ class _MainScreenViewState extends State<MainScreenView> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: ColorPalette.currentColorPalette.primaryBackground,
+      color: AppStyle.currentStyle.backgroundColor1,
 
       child: Column(
         verticalDirection: VerticalDirection.up,

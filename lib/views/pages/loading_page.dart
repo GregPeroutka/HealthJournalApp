@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_health_journal/color_palette.dart';
+import 'package:my_health_journal/app_style.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
@@ -17,7 +17,7 @@ class _LoadingPage extends State<LoadingPage> {
       child: Text(
         'Loading :D',
         style: TextStyle(
-          color: ColorPalette.currentColorPalette.hintText,
+          color: AppStyle.currentStyle.textColor2,
           fontSize: 15,
           fontWeight: FontWeight.bold,
           fontFamily: "Rubik",

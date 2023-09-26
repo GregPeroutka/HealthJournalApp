@@ -10,6 +10,7 @@ class AppStyle {
   final Color textColor1;
   final Color textColor2;
   final Color textColor3;
+  final Color contrastTextColor1;
 
   final double squareBorderRadius;
   final double completelyRoundRadius;
@@ -31,6 +32,7 @@ class AppStyle {
     required this.textColor1, 
     required this.textColor2, 
     required this.textColor3, 
+    required this.contrastTextColor1,
 
     required this.squareBorderRadius,
     required this.completelyRoundRadius,
@@ -54,7 +56,8 @@ class AppStyle {
     highlightColor2: const Color.fromARGB(255, 0, 255, 191),
     textColor1: const Color.fromARGB(255, 255, 255, 255),
     textColor2: const Color.fromARGB(255, 116, 116, 116),
-    textColor3: _defaultColor,
+    textColor3: const Color.fromARGB(255, 50, 50, 50),
+    contrastTextColor1: const Color.fromARGB(255, 0, 0, 0),
 
     squareBorderRadius: 20,
     completelyRoundRadius: 10000,

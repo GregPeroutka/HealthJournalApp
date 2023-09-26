@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:my_health_journal/color_palette.dart';
+import 'package:my_health_journal/app_style.dart';
 import 'package:my_health_journal/types/database_types.dart';
 import 'package:my_health_journal/view_models/weight_page_view_model.dart';
 import 'package:my_health_journal/views/pages/weight_page/weight_dialog.dart';
@@ -24,8 +24,6 @@ class _RecentWeightHistoryListState extends State<RecentWeightHistoryList> {
   late final StreamSubscription _onDataUpdatedSubscription;
   TextEditingController weightTextController = TextEditingController();
 
-  final double _borderRadius = 20;
-
   @override
   void initState() {
     _onDataUpdatedSubscription = widget.weightPageViewModel.onDataUpdatedBroadcastStream.listen((event) => setState(() {}));
@@ -45,8 +43,8 @@ class _RecentWeightHistoryListState extends State<RecentWeightHistoryList> {
     return Container(
       margin: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
       decoration: BoxDecoration(
-        borderRadius:BorderRadius.circular(_borderRadius),
-        color: ColorPalette.currentColorPalette.secondaryBackground
+        borderRadius:BorderRadius.circular(AppStyle.currentStyle.squareBorderRadius),
+        color: AppStyle.currentStyle.backgroundColor2
       ),
       clipBehavior: Clip.hardEdge,
       child: ListView.builder(
@@ -66,8 +64,8 @@ class _RecentWeightHistoryListState extends State<RecentWeightHistoryList> {
       clipBehavior: Clip.hardEdge,
 
       decoration: BoxDecoration(
-        color: ColorPalette.currentColorPalette.primaryBackground,
-        borderRadius: BorderRadius.circular(_borderRadius),
+        color: AppStyle.currentStyle.backgroundColor1,
+        borderRadius: BorderRadius.circular(AppStyle.currentStyle.squareBorderRadius),
       ),
 
       child: Material(
@@ -139,7 +137,7 @@ class _RecentWeightHistoryListState extends State<RecentWeightHistoryList> {
                           ? '---'
                           : '${data.weight.toString()} lbs',
                         style: TextStyle(
-                          color: ColorPalette.currentColorPalette.text,
+                          color: AppStyle.currentStyle.textColor1,
                           fontSize: 24,
                         ),
                       ),
@@ -149,7 +147,7 @@ class _RecentWeightHistoryListState extends State<RecentWeightHistoryList> {
                           ? 'Yesterday'
                           : '${widget.historyCount - index + 1} days ago',
                         style: TextStyle(
-                          color: ColorPalette.currentColorPalette.hintText,
+                          color: AppStyle.currentStyle.textColor2,
                           fontSize: 18,
                         ),
                       ),
@@ -159,7 +157,7 @@ class _RecentWeightHistoryListState extends State<RecentWeightHistoryList> {
                           ? '---'
                           : DateFormat('EEEE, MMMM d').format(data.dateTime),
                         style: TextStyle(
-                          color: ColorPalette.currentColorPalette.hintText,
+                          color: AppStyle.currentStyle.textColor2,
                           fontSize: 14,
                         ),
                       ),

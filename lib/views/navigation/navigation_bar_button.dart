@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_health_journal/color_palette.dart';
+import 'package:my_health_journal/app_style.dart';
 import 'package:my_health_journal/types/navigation_types.dart';
 
 class NavigationBarButton extends StatefulWidget {
@@ -46,11 +46,11 @@ class _NavigationBarButtonState extends State<NavigationBarButton>{
         ),
 
         decoration: BoxDecoration(
-          color: ColorPalette.currentColorPalette.primaryBackground,
+          color: AppStyle.currentStyle.backgroundColor1,
           shape: BoxShape.circle,
           border: Border.all(
             width: 4,
-            color: widget.isSelected ? ColorPalette.currentColorPalette.primary : ColorPalette.currentColorPalette.primaryBackground
+            color: widget.isSelected ? AppStyle.currentStyle.highlightColor1 : AppStyle.currentStyle.backgroundColor1
           )
         ),
 
@@ -60,7 +60,7 @@ class _NavigationBarButtonState extends State<NavigationBarButton>{
           },
           icon: Icon(
             _getIcon(), 
-            color: ColorPalette.currentColorPalette.text
+            color: AppStyle.currentStyle.textColor1
           )
         ),
 

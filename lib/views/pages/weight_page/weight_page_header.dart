@@ -39,13 +39,13 @@ class _WeightPageHeaderState extends State<WeightPageHeader> {
       mainAxisSize: MainAxisSize.min,
 
       children: [
-        header(),
-        mainBody()
+        _header(),
+        _mainBody()
       ],
     );
   }
 
-  Center header() {
+  Center _header() {
     return Center(
       child: Text(
         'Today',
@@ -59,15 +59,15 @@ class _WeightPageHeaderState extends State<WeightPageHeader> {
     );
   }
 
-  Widget mainBody() {
+  Widget _mainBody() {
     if(widget.weightPageViewModel.todaysWeightData == null) {
-      return addTodaysWeightHeader();
+      return _addTodaysWeightHeader();
     } else {
-      return displayAndEditTodaysWeightHeader();
+      return _displayAndEditTodaysWeightHeader();
     }
   }
 
-  Widget addTodaysWeightHeader() {
+  Widget _addTodaysWeightHeader() {
     return Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
@@ -78,25 +78,7 @@ class _WeightPageHeaderState extends State<WeightPageHeader> {
         onPressed: () => {
 
           _weightTextController.text = '',
-          showDialog(
-            context: context, 
-            builder: (context) {
-
-              return WeightDialog(
-                onDone: () {
-                  try {
-                    double weight = double.parse(_weightTextController.text);
-                    widget.weightPageViewModel.writeTodaysWeightData(weight).then((value) => Navigator.of(context).pop());
-                  } on FormatException catch (e) {
-                    debugPrint(e.toString());
-                  }
-                },
-
-                textEditingController: _weightTextController, 
-              );
-
-            }
-          )
+          _addWeightShowDialog()
 
         },
         child: Padding(
@@ -114,7 +96,27 @@ class _WeightPageHeaderState extends State<WeightPageHeader> {
     );
   }
 
-  Widget displayAndEditTodaysWeightHeader() {
+  Future<dynamic> _addWeightShowDialog() {
+    return showDialog(
+      context: context, 
+      builder: (context) {
+
+        return WeightDialog(
+          onDone: () {
+            try {
+              double weight = double.parse(_weightTextController.text);
+              widget.weightPageViewModel.writeTodaysWeightData(weight).then((value) => Navigator.of(context).pop());
+            } on FormatException catch (e) {
+              debugPrint(e.toString());
+            }
+          },
+          textEditingController: _weightTextController, 
+        ); 
+      }
+    );
+  }
+
+  Widget _displayAndEditTodaysWeightHeader() {
     double todaysWeight = (widget.weightPageViewModel.todaysWeightData) != null
       ? widget.weightPageViewModel.todaysWeightData!.weight
       : -1;
@@ -122,61 +124,68 @@ class _WeightPageHeaderState extends State<WeightPageHeader> {
     return Stack(
       alignment: Alignment.center,
       children: [
-    
-        Text(
-          '$todaysWeight lbs',
-          style: TextStyle(
-            color: AppStyle.currentStyle.textColor1,
-            fontSize: 50,
-            fontWeight: FontWeight.bold,
-            fontFamily: "Rubik",
-          ),
-        ),
-    
-        Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: IconButton(
-              onPressed: () {
-
-                _weightTextController.text = todaysWeight.toString();
-
-                showDialog(
-                  context: context, 
-                  builder: (context) {
-
-                    return WeightDialog(
-                      onDone: () {
-                        try {
-                          double inputWeight = double.parse(_weightTextController.text);
-                          if(todaysWeight != inputWeight) {
-                            widget.weightPageViewModel.writeTodaysWeightData(inputWeight).then((value) => Navigator.of(context).pop());
-                          } else {
-                            Navigator.of(context).pop();
-                          }
-                          
-                        } on FormatException catch (e) {
-                          debugPrint(e.toString());
-                        }
-                      },
-
-                      textEditingController: _weightTextController, 
-                    );
-
-                  }
-                );
-              },
-              icon: Icon(
-                Icons.edit,
-                size: 24,
-                color: AppStyle.currentStyle.textColor2
-              )
-            ),
-          ),
-        )
-    
+        _currentWeightText(todaysWeight),
+        _editCurrentWeightButton(todaysWeight)
       ],
+    );
+  }
+
+  Align _editCurrentWeightButton(double todaysWeight) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 16),
+        child: IconButton(
+          onPressed: () {
+
+            _weightTextController.text = todaysWeight.toString();
+
+            _editWeightShowDialog(todaysWeight);
+          },
+          icon: Icon(
+            Icons.edit,
+            size: 24,
+            color: AppStyle.currentStyle.textColor2
+          )
+        ),
+      ),
+    );
+  }
+
+  Text _currentWeightText(double todaysWeight) {
+    return Text(
+      '$todaysWeight lbs',
+      style: TextStyle(
+        color: AppStyle.currentStyle.textColor1,
+        fontSize: 50,
+        fontWeight: FontWeight.bold,
+        fontFamily: "Rubik",
+      ),
+    );
+  }
+
+  Future<dynamic> _editWeightShowDialog(double todaysWeight) {
+    return showDialog(
+      context: context, 
+      builder: (context) {
+
+        return WeightDialog(
+          onDone: () {
+            try {
+              double inputWeight = double.parse(_weightTextController.text);
+              if(todaysWeight != inputWeight) {
+                widget.weightPageViewModel.writeTodaysWeightData(inputWeight).then((value) => Navigator.of(context).pop());
+              } else {
+                Navigator.of(context).pop();
+              }
+              
+            } on FormatException catch (e) {
+              debugPrint(e.toString());
+            }
+          },
+          textEditingController: _weightTextController, 
+        );
+      }
     );
   }
 }

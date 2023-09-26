@@ -90,39 +90,47 @@ class _WeightPageState extends State<WeightPage> {
   Widget _recentHistoryHeaderWidget() {
     return Stack(
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 24.0),
-            child: Text(
-              'Last $historyCount Days',
-              style: TextStyle(
-                color: AppStyle.currentStyle.textColor2,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+        _recentHistoryText(),
+        _calendarButton()
+      ]
+    );
+  }
+
+  Align _recentHistoryText() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 24.0),
+        child: Text(
+          'Last $historyCount Days',
+          style: TextStyle(
+            color: AppStyle.currentStyle.textColor2,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppStyle.currentStyle.backgroundColor1,
-                shape: BoxShape.circle
-              ),
-              child: IconButton(
-                iconSize: 30,
-                color: AppStyle.currentStyle.textColor2,
-                icon: const Icon(Icons.calendar_month),
-                onPressed: _openCalendarDialog,
-              ),
-            ),
-          )
-        )
-      ]
+      ),
+    );
+  }
+
+  Align _calendarButton() {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 8),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppStyle.currentStyle.backgroundColor1,
+            shape: BoxShape.circle
+          ),
+          child: IconButton(
+            iconSize: 30,
+            color: AppStyle.currentStyle.textColor2,
+            icon: const Icon(Icons.calendar_month),
+            onPressed: _openCalendarDialog,
+          ),
+        ),
+      )
     );
   }
 

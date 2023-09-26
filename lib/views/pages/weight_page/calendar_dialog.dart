@@ -43,135 +43,173 @@ class _CalendarDialog extends State<CalendarDialog> {
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: AppStyle.currentStyle.backgroundColor1,
-                  borderRadius: BorderRadius.circular(AppStyle.currentStyle.squareBorderRadius)
-                ),
+              _calendarContainer(),
         
-                child: TableCalendar(
-                  focusedDay: _focusedDay,
-                  firstDay: DateTime.now().subtract(const Duration(days: 365)),
-                  lastDay: DateTime.now(),
-        
-                  headerStyle: HeaderStyle(
-                    titleCentered: true,
-                    formatButtonVisible: false,
-                    titleTextStyle: _titleTextStyle,
-                    leftChevronIcon: Icon(
-                      Icons.chevron_left,
-                      color: AppStyle.currentStyle.highlightColor1),
-                    rightChevronIcon: Icon(
-                      Icons.chevron_right,
-                      color: AppStyle.currentStyle.highlightColor1)
-                    ),
-                  daysOfWeekStyle: DaysOfWeekStyle(
-                    weekdayStyle: _weekdayTextStyle,
-                    weekendStyle: _weekdayTextStyle
-                  ),
-                  calendarStyle: CalendarStyle(
-                    isTodayHighlighted: false,
-                    outsideDaysVisible: false,
-                    selectedDecoration: BoxDecoration(
-                      color: AppStyle.currentStyle.highlightColor1,
-                      shape: BoxShape.circle
-                    ),
-                    defaultTextStyle: _selectableDayTextStyle,
-                    weekendTextStyle: _selectableDayTextStyle,
-                    disabledTextStyle: _unselectableDayTextStyle,
-                  ),
-        
-                  selectedDayPredicate: (day) {
-                    return isSameDay(_selectedDay, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) {
-                    setState(() {
-                      debugPrint(selectedDay.day.toString());
-                      _selectedDay = selectedDay;
-                      _focusedDay = focusedDay;
-                      _selectedWeightData = widget.weightPageViewModel.getWeightData(selectedDay);
-                    });
-                  },
-        
-                  calendarBuilders: CalendarBuilders(
-                    markerBuilder: (context, day, focusedDay) {
-                      if(widget.weightPageViewModel.getWeightData(day) != null) {
-                        return Icon(
-                          Icons.circle,
-                          color: AppStyle.currentStyle.textColor2,
-                          size: 10,
-                        );
-                      }
-                      return null;
-                    },
-                  ),
-        
-                )
-              ),
-        
-              Container(
-                clipBehavior: Clip.hardEdge,
-                margin: const EdgeInsets.only(top: 10),
-                decoration: BoxDecoration(
-                  color: AppStyle.currentStyle.backgroundColor1,
-                  borderRadius: BorderRadius.circular(AppStyle.currentStyle.completelyRoundRadius)
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16),
-                      child: Text(
-                        _selectedWeightData != null
-                          ? '${_selectedWeightData!.weight.toString()} lbs'
-                          : '---',
-                        style: TextStyle(
-                          color: AppStyle.currentStyle.textColor1,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Material(
-                        color: Colors.transparent,
-                        child: IconButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context, 
-                              builder: ((context) {
-                                _editWeightController.text = (_selectedWeightData != null) 
-                                  ? _selectedWeightData!.weight.toString()
-                                  : '';
-                                return WeightDialog(
-                                  onDone: () {
-                                    setState(() {
-                                      widget.weightPageViewModel.writeWeightData(_selectedDay, double.parse(_editWeightController.text));
-                                      _selectedWeightData = widget.weightPageViewModel.getWeightData(_selectedDay);
-                                    });
-                                    widget.onDone();
-                                    Navigator.of(context).pop();
-                                  }, 
-                                  textEditingController: _editWeightController 
-                                );
-                              })
-                            );
-                          },
-                          icon: Icon(
-                            Icons.edit,
-                            color: AppStyle.currentStyle.textColor2,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
+              _editWeightContainer(context)
             ],
           ),
         ),
       ),
     );
   }
+
+  Container _calendarContainer() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppStyle.currentStyle.backgroundColor1,
+        borderRadius: BorderRadius.circular(AppStyle.currentStyle.squareBorderRadius)
+      ),
+
+      child: TableCalendar(
+        focusedDay: _focusedDay,
+        firstDay: DateTime.now().subtract(const Duration(days: 365)),
+        lastDay: DateTime.now(),
+
+        headerStyle: _calendarHeaderStyle(),
+        daysOfWeekStyle: _calendarDaysOfWeekStyle(),
+        calendarStyle: _calendarStyle(),
+
+        selectedDayPredicate: (day) {
+          return isSameDay(_selectedDay, day);
+        },
+
+        onDaySelected: _onDaySelected,
+        calendarBuilders: _calendarBuilders(),
+      )
+    );
+  
+  }
+  HeaderStyle _calendarHeaderStyle() {
+    return HeaderStyle(
+      titleCentered: true,
+      formatButtonVisible: false,
+      titleTextStyle: _titleTextStyle,
+      leftChevronIcon: Icon(
+        Icons.chevron_left,
+        color: AppStyle.currentStyle.highlightColor1
+      ),
+      rightChevronIcon: Icon(
+        Icons.chevron_right,
+        color: AppStyle.currentStyle.highlightColor1
+      )
+    );
+  }
+
+  DaysOfWeekStyle _calendarDaysOfWeekStyle() {
+    return DaysOfWeekStyle(
+      weekdayStyle: _weekdayTextStyle,
+      weekendStyle: _weekdayTextStyle
+    );
+  }
+
+  CalendarStyle _calendarStyle() {
+    return CalendarStyle(
+      isTodayHighlighted: false,
+      outsideDaysVisible: false,
+      selectedDecoration: BoxDecoration(
+        color: AppStyle.currentStyle.highlightColor1,
+        shape: BoxShape.circle
+      ),
+      defaultTextStyle: _selectableDayTextStyle,
+      weekendTextStyle: _selectableDayTextStyle,
+      disabledTextStyle: _unselectableDayTextStyle,
+    );
+  }
+
+  void _onDaySelected(selectedDay, focusedDay) {
+    setState(() {
+      debugPrint(selectedDay.day.toString());
+      _selectedDay = selectedDay;
+      _focusedDay = focusedDay;
+      _selectedWeightData = widget.weightPageViewModel.getWeightData(selectedDay);
+    });
+  }
+  
+  CalendarBuilders<Object?> _calendarBuilders() {
+    return CalendarBuilders(
+      markerBuilder: (context, day, focusedDay) {
+        if(widget.weightPageViewModel.getWeightData(day) != null) {
+          return Icon(
+            Icons.circle,
+            color: AppStyle.currentStyle.textColor2,
+            size: 10,
+          );
+        }
+        return null;
+      },
+    );
+  }
+
+  Container _editWeightContainer(BuildContext context) {
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      margin: const EdgeInsets.only(top: 10),
+      decoration: BoxDecoration(
+        color: AppStyle.currentStyle.backgroundColor1,
+        borderRadius: BorderRadius.circular(AppStyle.currentStyle.completelyRoundRadius)
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _weightText(),
+          _editWeightButton(context),
+        ],
+      ),
+    );
+  }
+
+  Padding _weightText() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16),
+      child: Text(
+        _selectedWeightData != null
+          ? '${_selectedWeightData!.weight.toString()} lbs'
+          : '---',
+        style: TextStyle(
+          color: AppStyle.currentStyle.textColor1,
+          fontSize: 24,
+          fontWeight: FontWeight.bold
+        ),
+      ),
+    );
+  }
+
+  Align _editWeightButton(BuildContext context) {
+    return Align(
+      alignment: Alignment.center,
+      child: Material(
+        color: Colors.transparent,
+        child: IconButton(
+          onPressed: () => _editWeightShowDialog(context),
+          icon: Icon(
+            Icons.edit,
+            color: AppStyle.currentStyle.textColor2,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<dynamic> _editWeightShowDialog(BuildContext context) {
+    return showDialog(
+      context: context, 
+      builder: ((context) {
+        _editWeightController.text = (_selectedWeightData != null) 
+          ? _selectedWeightData!.weight.toString()
+          : '';
+        return WeightDialog(
+          onDone: () {
+            setState(() {
+              widget.weightPageViewModel.writeWeightData(_selectedDay, double.parse(_editWeightController.text));
+              _selectedWeightData = widget.weightPageViewModel.getWeightData(_selectedDay);
+            });
+            widget.onDone();
+            Navigator.of(context).pop();
+          }, 
+          textEditingController: _editWeightController 
+        );
+      })
+    );
+  }
+
 }

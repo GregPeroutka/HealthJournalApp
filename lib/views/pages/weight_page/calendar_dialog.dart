@@ -36,17 +36,19 @@ class _CalendarDialog extends State<CalendarDialog> {
   Widget build(BuildContext context) {
     _selectedWeightData = widget.weightPageViewModel.getWeightData(_selectedDay);
 
-    return SafeArea(
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              _calendarContainer(),
-        
-              _editWeightContainer(context)
-            ],
+    return Material(
+      child: SafeArea(
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: [
+                _calendarContainer(),
+          
+                _editWeightContainer(context)
+              ],
+            ),
           ),
         ),
       ),

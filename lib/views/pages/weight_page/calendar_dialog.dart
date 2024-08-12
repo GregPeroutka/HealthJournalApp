@@ -36,48 +36,49 @@ class _CalendarDialog extends State<CalendarDialog> {
   Widget build(BuildContext context) {
     _selectedWeightData = widget.weightPageViewModel.getWeightData(_selectedDay);
 
-    return Material(
-      child: SafeArea(
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                _calendarContainer(),
-          
-                _editWeightContainer(context)
-              ],
-            ),
+    return SafeArea(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              _calendarContainer(),
+        
+              _editWeightContainer(context)
+            ],
           ),
         ),
       ),
     );
   }
 
-  Container _calendarContainer() {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppStyle.currentStyle.backgroundColor1,
-        borderRadius: BorderRadius.circular(AppStyle.currentStyle.squareBorderRadius)
+  Material _calendarContainer() {
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppStyle.currentStyle.backgroundColor1,
+          borderRadius: BorderRadius.circular(AppStyle.currentStyle.squareBorderRadius)
+        ),
+      
+        child: TableCalendar(
+          focusedDay: _focusedDay,
+          firstDay: DateTime.now().subtract(const Duration(days: 365)),
+          lastDay: DateTime.now(),
+      
+          headerStyle: _calendarHeaderStyle(),
+          daysOfWeekStyle: _calendarDaysOfWeekStyle(),
+          calendarStyle: _calendarStyle(),
+      
+          selectedDayPredicate: (day) {
+            return isSameDay(_selectedDay, day);
+          },
+      
+          onDaySelected: _onDaySelected,
+          calendarBuilders: _calendarBuilders(),
+        )
       ),
-
-      child: TableCalendar(
-        focusedDay: _focusedDay,
-        firstDay: DateTime.now().subtract(const Duration(days: 365)),
-        lastDay: DateTime.now(),
-
-        headerStyle: _calendarHeaderStyle(),
-        daysOfWeekStyle: _calendarDaysOfWeekStyle(),
-        calendarStyle: _calendarStyle(),
-
-        selectedDayPredicate: (day) {
-          return isSameDay(_selectedDay, day);
-        },
-
-        onDaySelected: _onDaySelected,
-        calendarBuilders: _calendarBuilders(),
-      )
     );
   
   }
@@ -142,20 +143,23 @@ class _CalendarDialog extends State<CalendarDialog> {
     );
   }
 
-  Container _editWeightContainer(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      margin: const EdgeInsets.only(top: 10),
-      decoration: BoxDecoration(
-        color: AppStyle.currentStyle.backgroundColor1,
-        borderRadius: BorderRadius.circular(AppStyle.currentStyle.completelyRoundRadius)
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _weightText(),
-          _editWeightButton(context),
-        ],
+  Material _editWeightContainer(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        clipBehavior: Clip.hardEdge,
+        margin: const EdgeInsets.only(top: 10),
+        decoration: BoxDecoration(
+          color: AppStyle.currentStyle.backgroundColor1,
+          borderRadius: BorderRadius.circular(AppStyle.currentStyle.completelyRoundRadius)
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _weightText(),
+            _editWeightButton(context),
+          ],
+        ),
       ),
     );
   }

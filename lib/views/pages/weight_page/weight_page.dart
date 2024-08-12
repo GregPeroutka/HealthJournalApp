@@ -136,6 +136,7 @@ class _WeightPageState extends State<WeightPage> {
 
   void _openCalendarDialog() {
     showDialog(
+      //barrierDismissible: true,
       context: context, 
       builder: (context) {
         return CalendarDialog(

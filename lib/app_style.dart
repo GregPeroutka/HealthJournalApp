@@ -23,6 +23,8 @@ class AppStyle {
   final double fontSize4;
   final double fontSize5;
 
+  final double padding;
+
   AppStyle({
     required this.backgroundColor1, 
     required this.backgroundColor2, 
@@ -44,6 +46,8 @@ class AppStyle {
     required this.fontSize3,
     required this.fontSize4,
     required this.fontSize5,
+
+    required this.padding,
   });
 
   static const Color _defaultColor = Color.fromARGB(100, 255, 0, 0);
@@ -68,7 +72,9 @@ class AppStyle {
     fontSize2: 44,
     fontSize3: 36,
     fontSize4: 24,
-    fontSize5: 12
+    fontSize5: 12,
+
+    padding: 10
   );
   // Hey Alex
 

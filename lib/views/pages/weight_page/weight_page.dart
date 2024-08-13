@@ -22,7 +22,7 @@ class WeightPage extends StatefulWidget {
 
 class _WeightPageState extends State<WeightPage> {
 
-  final double _containerPadding = 10;
+  
 
   final int historyCount = 7;
 
@@ -40,9 +40,9 @@ class _WeightPageState extends State<WeightPage> {
       bottom: false,
       child: Padding(
         padding: EdgeInsets.fromLTRB(
-          _containerPadding,
+          AppStyle.currentStyle.padding,
           0,
-          _containerPadding,
+          AppStyle.currentStyle.padding,
           0
         ),
         

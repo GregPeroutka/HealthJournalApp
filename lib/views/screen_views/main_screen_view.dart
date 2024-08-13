@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide NavigationBar;
 import 'package:my_health_journal/app_style.dart';
 import 'package:my_health_journal/types/navigation_types.dart';
+import 'package:my_health_journal/view_models/food_page_view_model.dart';
 import 'package:my_health_journal/view_models/main_screen_view_model.dart';
 import 'package:my_health_journal/view_models/weight_page_view_model.dart';
 import 'package:my_health_journal/views/navigation/navigation_bar.dart';
+import 'package:my_health_journal/views/pages/food_page/food_page.dart';
 import 'package:my_health_journal/views/pages/loading_page.dart';
 import 'package:my_health_journal/view_models/page_view_model.dart';
 import 'package:my_health_journal/views/pages/weight_page/weight_page.dart';
@@ -39,6 +41,7 @@ class _MainScreenViewState extends State<MainScreenView> {
           case PageType.weight:
             _currentPage = WeightPage(weightPageViewModel: pageViewModel as WeightPageViewModel);
           case PageType.food:
+            _currentPage = FoodPage(foodPageViewModel: pageViewModel as FoodPageViewModel);
           case PageType.workout:
           case PageType.settings:
         }
@@ -78,9 +81,7 @@ class _MainScreenViewState extends State<MainScreenView> {
       case NavigationBarButtonType.weight:
         widget.mainScreenViewModel.loadWeight();
       case NavigationBarButtonType.food:
-        setState(() {
-          _currentPage = const LoadingPage();
-        });
+        widget.mainScreenViewModel.loadFood();
       case NavigationBarButtonType.workout:
         setState(() {
           _currentPage = const LoadingPage();

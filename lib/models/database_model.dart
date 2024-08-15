@@ -6,6 +6,7 @@ import "package:my_health_journal/types/database_types.dart";
 class DatabaseModel {
 
   static final _weightDataCollectionReference = FirebaseFirestore.instance.collection('user_data/weight_data/${FirebaseAuth.instance.currentUser!.uid}');
+  static final _foodDataCollectionReference = FirebaseFirestore.instance.collection('user_data/food_data/${FirebaseAuth.instance.currentUser!.uid}');
   static final DateFormat dateToIdFormatter = DateFormat('yyyy-MM-dd');
 
 
@@ -13,6 +14,17 @@ class DatabaseModel {
 
     return _weightDataCollectionReference.doc(_getId(dateTime)).set({
       'Weight': weight
+    });
+
+  }
+
+  static Future<void> writeFoodData(DateTime dateTime, double calories, double carbs, double protein, double fat) async {
+
+    return _foodDataCollectionReference.doc(_getId(dateTime)).set({
+      'Calories': calories,
+      'Carbs': carbs,
+      'Protein': protein,
+      'Fat': fat
     });
 
   }
@@ -32,6 +44,26 @@ class DatabaseModel {
 
     return weightDataList;
   }
+
+  static Future<List<FoodData>> getFoodData() async {
+    QuerySnapshot<Map<String, dynamic>> foods = await _foodDataCollectionReference.get();
+
+    List<FoodData> foodDataList = List<FoodData>.empty(growable: true);
+    for (var element in foods.docs) {
+      foodDataList.add(
+        FoodData(
+          dateTime: _getDateTime(element.id),
+          calories: element.data()['Calories'],
+          carbs: element.data()['Carbs'],
+          protein: element.data()['Protein'],
+          fat: element.data()['Fat']
+        )
+      );
+    }
+
+    return foodDataList;
+  }
+  
 
   static String _getId(DateTime dateTime) {
     return dateToIdFormatter.format(dateTime);

@@ -89,6 +89,9 @@ class _WeightGraphState extends State<WeightGraph> {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
+        margin: EdgeInsets.only(
+          left: AppStyle.currentStyle.padding,
+          top: AppStyle.currentStyle.padding),
         height: 36,
         decoration: BoxDecoration(
           color: AppStyle.currentStyle.backgroundColor1,

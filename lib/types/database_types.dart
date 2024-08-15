@@ -12,10 +12,10 @@ class WeightData {
 class FoodData {
 
   DateTime dateTime;
-  double calories;
-  double carbs;
-  double protein;
-  double fat;
+  int calories;
+  int carbs;
+  int protein;
+  int fat;
 
   FoodData({
     required this.dateTime,

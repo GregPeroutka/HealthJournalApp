@@ -74,7 +74,7 @@ class _FoodDialog extends State<FoodDialog> {
                                 autofocus: true,
                                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,1}')),
+                                  FilteringTextInputFormatter.allow(RegExp(r'^\d*')),
                                 ],
                                                       
                                 decoration: InputDecoration(

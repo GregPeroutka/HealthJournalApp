@@ -43,12 +43,12 @@ class FoodPageViewModel extends PageViewModel {
     _onDataUpdatedSink.add(true);
   }
 
-  Future writeTodaysFoodData(double calories, double carbs, double protein, double fat) async {
+  Future writeTodaysFoodData(int calories, int carbs, int protein, int fat) async {
     await DatabaseModel.writeFoodData(DateTime.now(), calories, carbs, protein, fat);
     await loadData();
   }
 
-  Future writeFoodData(DateTime dateTime, double calories, double carbs, double protein, double fat) async {
+  Future writeFoodData(DateTime dateTime, int calories, int carbs, int protein, int fat) async {
     await DatabaseModel.writeFoodData(dateTime, calories, carbs, protein, fat);
     await loadData();
   }

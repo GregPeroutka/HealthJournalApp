@@ -104,10 +104,10 @@ class _FoodPageHeaderState extends State<FoodPageHeader> {
         return FoodDialog(
           onDone: () {
             try {
-              double calories = double.parse(_foodTextController.text);
-              double carbs = double.parse(_foodTextController.text);
-              double protein = double.parse(_foodTextController.text);
-              double fat = double.parse(_foodTextController.text);
+              int calories = int.parse(_foodTextController.text);
+              int carbs = int.parse(_foodTextController.text);
+              int protein = int.parse(_foodTextController.text);
+              int fat = int.parse(_foodTextController.text);
               widget.foodPageViewModel.writeTodaysFoodData(calories, carbs, protein, fat).then((value) => Navigator.of(context).pop());
             } on FormatException catch (e) {
               debugPrint(e.toString());
@@ -120,7 +120,7 @@ class _FoodPageHeaderState extends State<FoodPageHeader> {
   }
 
   Widget _displayAndEditTodaysFoodHeader() {
-    double todaysFood = (widget.foodPageViewModel.todaysFoodData) != null
+    int todaysFood = (widget.foodPageViewModel.todaysFoodData) != null
       ? widget.foodPageViewModel.todaysFoodData!.calories
       : -1;
 
@@ -133,7 +133,7 @@ class _FoodPageHeaderState extends State<FoodPageHeader> {
     );
   }
 
-  Align _editCurrentFoodButton(double todaysFood) {
+  Align _editCurrentFoodButton(int todaysFood) {
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
@@ -155,7 +155,7 @@ class _FoodPageHeaderState extends State<FoodPageHeader> {
     );
   }
 
-  Text _currentFoodText(double todaysFood) {
+  Text _currentFoodText(int todaysFood) {
     return Text(
       '$todaysFood cal',
       style: TextStyle(
@@ -167,7 +167,7 @@ class _FoodPageHeaderState extends State<FoodPageHeader> {
     );
   }
 
-  Future<dynamic> _editFoodShowDialog(double todaysFood) {
+  Future<dynamic> _editFoodShowDialog(int todaysFood) {
     return showDialog(
       context: context, 
       builder: (context) {
@@ -175,9 +175,9 @@ class _FoodPageHeaderState extends State<FoodPageHeader> {
         return FoodDialog(
           onDone: () {
             try {
-              double inputFood = double.parse(_foodTextController.text);
+              int inputFood = int.parse(_foodTextController.text);
               if(todaysFood != inputFood) {
-                widget.foodPageViewModel.writeTodaysFoodData(inputFood, 0.0, 0.0, 0.0).then((value) => Navigator.of(context).pop());
+                widget.foodPageViewModel.writeTodaysFoodData(inputFood, 0, 0, 0).then((value) => Navigator.of(context).pop());
               } else {
                 Navigator.of(context).pop();
               }

@@ -18,7 +18,7 @@ class DatabaseModel {
 
   }
 
-  static Future<void> writeFoodData(DateTime dateTime, double calories, double carbs, double protein, double fat) async {
+  static Future<void> writeFoodData(DateTime dateTime, int calories, int carbs, int protein, int fat) async {
 
     return _foodDataCollectionReference.doc(_getId(dateTime)).set({
       'Calories': calories,

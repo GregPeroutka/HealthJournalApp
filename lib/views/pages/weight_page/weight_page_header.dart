@@ -51,9 +51,9 @@ class _WeightPageHeaderState extends State<WeightPageHeader> {
         'Today',
         style: TextStyle(
           color: AppStyle.currentStyle.textColor2,
-          fontSize: 15,
+          fontSize: AppStyle.currentStyle.fontSize4,
           fontWeight: FontWeight.bold,
-          fontFamily: "Rubik",
+          fontFamily: AppStyle.currentStyle.fontFamily
         ),
       ),
     );

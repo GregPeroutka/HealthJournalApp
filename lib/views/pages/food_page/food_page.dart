@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_health_journal/app_style.dart';
 import 'package:my_health_journal/view_models/food_page_view_model.dart';
+import 'package:my_health_journal/views/pages/food_page/food_page_header.dart';
 
 class FoodPage extends StatefulWidget {
   final FoodPageViewModel foodPageViewModel; 
@@ -32,8 +33,23 @@ class _FoodPageState extends State<FoodPage> {
             color: AppStyle.currentStyle.backgroundColor2,
             borderRadius: BorderRadius.circular(AppStyle.currentStyle.squareBorderRadius),
           ),
+
+          child: Column(
+            children: [
+    
+              _verticalPadding(8),
+
+              FoodPageHeader(
+                foodPageViewModel: widget.foodPageViewModel
+              ),
+            ],
+          )
         )
       )
     );
+  }
+
+  Widget _verticalPadding(double space) {
+    return Padding(padding: EdgeInsets.only(top: space));
   }
 }

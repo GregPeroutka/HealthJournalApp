@@ -7,7 +7,6 @@ import 'package:my_health_journal/views/pages/weight_page/recent_weight_history_
 import 'package:my_health_journal/views/pages/weight_page/weight_graph.dart';
 import 'package:my_health_journal/views/pages/weight_page/weight_page_header.dart';
 
-
 class WeightPage extends StatefulWidget {
   final WeightPageViewModel weightPageViewModel; 
   
@@ -21,9 +20,6 @@ class WeightPage extends StatefulWidget {
 }
 
 class _WeightPageState extends State<WeightPage> {
-
-  
-
   final int historyCount = 7;
 
   List<WeightData?> historyWeightData = List.empty();
@@ -89,6 +85,7 @@ class _WeightPageState extends State<WeightPage> {
 
   Widget _recentHistoryHeaderWidget() {
     return Stack(
+      alignment: AlignmentDirectional.center,
       children: [
         _recentHistoryText(),
         _calendarButton()

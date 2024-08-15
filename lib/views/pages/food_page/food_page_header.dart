@@ -18,7 +18,10 @@ class FoodPageHeader extends StatefulWidget {
 }
 
 class _FoodPageHeaderState extends State<FoodPageHeader> {
-  final TextEditingController _foodTextController = TextEditingController();
+  final TextEditingController _caloriesTextController = TextEditingController();
+  final TextEditingController _carbsTextController = TextEditingController();
+  final TextEditingController _proteinTextController = TextEditingController();
+  final TextEditingController _fatTextController = TextEditingController();
   late final StreamSubscription _onDataUpdatedSubscription;
 
 @override
@@ -77,7 +80,7 @@ class _FoodPageHeaderState extends State<FoodPageHeader> {
       child: TextButton(
         onPressed: () => {
 
-          _foodTextController.text = '',
+          _caloriesTextController.text = '',
           _addFoodShowDialog()
 
         },
@@ -104,16 +107,16 @@ class _FoodPageHeaderState extends State<FoodPageHeader> {
         return FoodDialog(
           onDone: () {
             try {
-              int calories = int.parse(_foodTextController.text);
-              int carbs = int.parse(_foodTextController.text);
-              int protein = int.parse(_foodTextController.text);
-              int fat = int.parse(_foodTextController.text);
+              int calories = int.parse(_caloriesTextController.text);
+              int carbs = int.parse(_carbsTextController.text);
+              int protein = int.parse(_proteinTextController.text);
+              int fat = int.parse(_fatTextController.text);
               widget.foodPageViewModel.writeTodaysFoodData(calories, carbs, protein, fat).then((value) => Navigator.of(context).pop());
             } on FormatException catch (e) {
               debugPrint(e.toString());
             }
           },
-          textEditingController: _foodTextController, 
+          textEditingController: _caloriesTextController, 
         ); 
       }
     );
@@ -141,7 +144,7 @@ class _FoodPageHeaderState extends State<FoodPageHeader> {
         child: IconButton(
           onPressed: () {
 
-            _foodTextController.text = todaysFood.toString();
+            _caloriesTextController.text = todaysFood.toString();
 
             _editFoodShowDialog(todaysFood);
           },
@@ -175,7 +178,7 @@ class _FoodPageHeaderState extends State<FoodPageHeader> {
         return FoodDialog(
           onDone: () {
             try {
-              int inputFood = int.parse(_foodTextController.text);
+              int inputFood = int.parse(_caloriesTextController.text);
               if(todaysFood != inputFood) {
                 widget.foodPageViewModel.writeTodaysFoodData(inputFood, 0, 0, 0).then((value) => Navigator.of(context).pop());
               } else {
@@ -186,7 +189,7 @@ class _FoodPageHeaderState extends State<FoodPageHeader> {
               debugPrint(e.toString());
             }
           },
-          textEditingController: _foodTextController, 
+          textEditingController: _caloriesTextController, 
         );
       }
     );

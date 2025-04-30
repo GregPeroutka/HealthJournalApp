@@ -119,56 +119,64 @@ class _RecentWeightHistoryListState extends State<RecentWeightHistoryList> {
           },
 
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
+            padding: EdgeInsets.fromLTRB(
+              16.0, 
+              AppStyle.currentStyle.padding, 
+              16.0,
+              AppStyle.currentStyle.padding
+            ),
+
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-          
-                const Padding(padding: EdgeInsets.only(left: 8.0)),
-          
-                Padding(
-                  padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                
-                      Text(
-                        data == null
-                          ? '---'
-                          : '${data.weight.toString()} lbs',
-                        style: TextStyle(
-                          color: AppStyle.currentStyle.textColor1,
-                          fontSize: 24,
-                        ),
-                      ),
-                        
-                      Text(
-                        index == widget.historyCount
-                          ? 'Yesterday'
-                          : '${widget.historyCount - index + 1} days ago',
-                        style: TextStyle(
-                          color: AppStyle.currentStyle.textColor2,
-                          fontSize: 18,
-                        ),
-                      ),
-                
-                      Text(
-                        data == null
-                          ? '---'
-                          : DateFormat('EEEE, MMMM d').format(data.dateTime),
-                        style: TextStyle(
-                          color: AppStyle.currentStyle.textColor2,
-                          fontSize: 14,
-                        ),
-                      ),
-                        
-                    ],
+
+                Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    data == null
+                      ? '---'
+                      : '${data.weight.toString()} lbs',
+                    style: TextStyle(
+                      color: AppStyle.currentStyle.textColor1,
+                      fontSize: 24,
+                    ),
                   ),
                 ),
           
-                const Spacer(),
-                
-                Text('$index')
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 4.0, bottom: 4.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                  
+                        Text(
+                          index == widget.historyCount
+                            ? 'Yesterday'
+                            : '${widget.historyCount - index + 1} days ago',
+                          style: TextStyle(
+                            color: AppStyle.currentStyle.textColor2,
+                            fontSize: 18,
+                          ),
+                        ),
+                  
+                        Text(
+                          data == null
+                            ? '---'
+                            : DateFormat('EEEE, MMMM d').format(data.dateTime),
+                          style: TextStyle(
+                            color: AppStyle.currentStyle.textColor2,
+                            fontSize: 14,
+                          ),
+                        ),
+                          
+                      ],
+                    ),
+                  ),
+                ),
+
               ],
             ),
           ),
